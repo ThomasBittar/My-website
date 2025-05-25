@@ -48,16 +48,16 @@ header{
     align-items: center;
 }
 .logo{
-    height: 7.5vw;
-    max-height: 5vh;
-    width: 7.5vw;
-    max-width: 5vh;
+    height: 9vw;
+    max-height: 7.5vh;
+    width: 9vw;
+    max-width: 7.5vh;
 }
 .menu{
-    height: 7.5vw;
-    max-height: 5vh;
-    width: 7.5vw;
-    max-width: 5vh;
+    height: 9vw;
+    max-height: 7.5vh;
+    width: 9vw;
+    max-width: 7.5vh;
     border-radius: 5px;
     display: flex;
     flex-direction: column;
