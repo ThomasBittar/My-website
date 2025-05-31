@@ -63,6 +63,7 @@ function getN() {
     while (isNaN(choice) || choice <= 0) {
         choice = Number(window.prompt("Please enter a number greater than 0"));
     }
+    console.log('khara');
     n = choice;
 }
 function getB() {

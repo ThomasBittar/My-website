@@ -75,6 +75,58 @@ header {
     border-radius: 5px;
 }
 
+
+/* Dropdown menu */
+
+.menu-wrapper {
+    height: 9vw;
+    max-height: 7.5vh;
+    width: 9vw;
+    max-width: 7.5vh;
+    overflow: hidden;
+}
+
+.menu-wrapper:hover {
+    padding-top: 5px;
+    padding-bottom: 5px;
+    height: calc(9vw+10px);
+    max-height: calc(7.5vh+10px);
+    overflow: visible;
+}
+
+.drop-down-menu {
+    width: 100px;
+    padding: 5px;
+    background-color: var(--card-bg);
+    border-color: var(--card-border);
+    border-style: solid;
+    border-width: 1px;
+    border-radius: 10px;
+    box-shadow: 5px 5px 5px #213885;
+    color: var(--text-primary);
+    display: block;
+    margin-top: 15px;
+    transition: transform ease 0.2s;
+
+}
+
+.menu-wrapper a {
+    color: var(--text-primary);
+    text-decoration: none;
+}
+
+.menu-wrapper:hover .drop-down-menu {
+    transform: translate(0, -10px);
+
+}
+
+.drop-down-menu div {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+}
+
 main {
     font-family: 'Overpass', sans-serif;
     display: flex;
