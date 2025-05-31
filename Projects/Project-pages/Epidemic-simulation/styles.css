@@ -1,7 +1,105 @@
+:root {
+  --bg: #F8FAFC;
+  --text-primary: #1E293B;
+  --text-secondary: #64748B;
+  --accent: #3B82F6;
+  --accent-hover: #2563EB;
+  --highlight: #FBBF24;
 
+  --card-bg: #FFFFFF;
+  --card-border: #E2E8F0;
+
+  --header-bg: #1E40AF;
+  --header-text: #FFFFFF;
+  --header-link: #FBBF24;
+  --header-link-hover: #FFE082;
+
+  --footer-bg: #E5E7EB;
+  --footer-text: #374151;
+  --footer-link: #3B82F6;
+  --footer-link-hover: #2563EB;
+}
+
+body {
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: baseline;
+  align-items: center;
+  min-height: 100vh;
+  font-family: 'Inter', 'Roboto', Arial, sans-serif;
+  font-weight: 400;
+  line-height: 1.5;
+
+}
+
+
+/*Header*/
+header {
+  background-color: var(--header-bg);
+  color: var(--header-text);
+  height: 10vh;
+  width: 100vw;
+  top: 0;
+  left: 0;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+  align-items: center;
+}
+
+.logo {
+  height: 9vw;
+  max-height: 7.5vh;
+  width: 9vw;
+  max-width: 7.5vh;
+}
+
+.menu {
+  height: 9vw;
+  max-height: 7.5vh;
+  width: 9vw;
+  max-width: 7.5vh;
+  border-radius: 5px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  align-items: center;
+}
+
+.menu:hover {
+  background-color: #213885;
+}
+
+.menu .line {
+  height: 10%;
+  width: 75%;
+  background-color: var(--header-text);
+  border-radius: 5px;
+}
+
+/* MAIN */
+
+main {
+  background-color: var(--bg);
+  color: var(--text-primary);
+  width: 100vw;
+  height: fit-content;
+  display: flex;
+  flex-direction: column;
+  justify-content: baseline;
+  align-items: center;
+  gap: 5vh;
+  box-sizing: border-box;
+  padding-top: 5vh;
+  padding-bottom: 5vh;
+}
+
+/* GRAPHE */
 #graphe {
   position: relative;
-  width: 1000px;
+  width: 90vw;
   height: 400px;
   background: #f0f0f0;
   border: 1px solid #ccc;
@@ -15,4 +113,58 @@
   height: 4px;
   background: red;
   border-radius: 50%;
+}
+
+.buttons {
+  width: 90vw;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+}
+
+.buttons button {
+  width: 15vw;
+  height: auto;
+}
+
+/* Boutons généraux */
+button {
+  background-color: var(--accent);
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 0.6em 1.2em;
+  font-size: 1rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* Hover */
+button:hover {
+  background-color: var(--accent-hover);
+  transform: translateY(-2px);
+}
+
+/* Bouton désactivé */
+button:disabled {
+  background-color: var(--text-secondary);
+  color: #ccc;
+  cursor: not-allowed;
+  box-shadow: none;
+  transform: none;
+}
+
+/* Variante secondaire (ex : bouton clair) */
+.button-secondary {
+  background-color: var(--card-bg);
+  color: var(--accent);
+  border: 1px solid var(--accent);
+}
+
+.button-secondary:hover {
+  background-color: var(--highlight);
+  border-color: var(--accent-hover);
+  color: var(--text-primary);
 }

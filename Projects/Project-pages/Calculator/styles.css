@@ -1,14 +1,85 @@
-body{
+:root {
+    --bg: #F8FAFC;
+    --text-primary: #1E293B;
+    --text-secondary: #64748B;
+    --accent: #3B82F6;
+    --accent-hover: #2563EB;
+    --highlight: #FBBF24;
+
+    --card-bg: #FFFFFF;
+    --card-border: #E2E8F0;
+
+    --header-bg: #1E40AF;
+    --header-text: #FFFFFF;
+    --header-link: #FBBF24;
+    --header-link-hover: #FFE082;
+
+    --footer-bg: #E5E7EB;
+    --footer-text: #374151;
+    --footer-link: #3B82F6;
+    --footer-link-hover: #2563EB;
+}
+
+
+/*Header*/
+header {
+    background-color: var(--header-bg);
+    color: var(--header-text);
+    height: 10vh;
+    width: 100vw;
+    top: 0;
+    left: 0;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    align-items: center;
+}
+
+.logo {
+    height: 9vw;
+    max-height: 7.5vh;
+    width: 9vw;
+    max-width: 7.5vh;
+}
+
+.menu {
+    height: 9vw;
+    max-height: 7.5vh;
+    width: 9vw;
+    max-width: 7.5vh;
+    border-radius: 5px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    align-items: center;
+}
+
+.menu:hover {
+    background-color: #213885;
+}
+
+.menu .line {
+    height: 10%;
+    width: 75%;
+    background-color: var(--header-text);
+    border-radius: 5px;
+}
+
+
+
+
+body {
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
 }
-.calculator{
+
+.calculator {
     font-family: 'Roboto Mono', monospace;
     width: 35vw;
     height: 50vw;
-    background-color: rgb(15%,15%,15%);
+    background-color: rgb(15%, 15%, 15%);
     color: white;
     display: flex;
     flex-direction: column;
@@ -19,7 +90,8 @@ body{
     padding: 2.5vw;
     font-size: 100%;
 }
-.calculator .line{
+
+.calculator .line {
     width: 100%;
     display: flex;
     flex-direction: row;
@@ -27,8 +99,9 @@ body{
     gap: 1vw;
     align-items: center;
 }
-.calculator div div{
-    
+
+.calculator div div {
+    height: 100%;
     border-radius: 5px;
     border-width: 1px;
     display: flex;
@@ -37,10 +110,11 @@ body{
     align-items: center;
     padding: 1vw;
     background-color: gray;
-    box-shadow: 5px 5px 5px rgb(10%,10%,10%);
+    box-shadow: 5px 5px 5px rgb(10%, 10%, 10%);
 }
-.calculator div div:hover{
-    
+
+.calculator div div:hover {
+
     border-radius: 5px;
     border-width: 1px;
     display: flex;
@@ -48,10 +122,11 @@ body{
     justify-content: center;
     align-items: center;
     padding: 1vw;
-    box-shadow: 0px 0px 0px rgb(10%,10%,10%);
+    box-shadow: 0px 0px 0px rgb(10%, 10%, 10%);
 }
-.screen{
-    background-color: rgb(5%,5%,5%);
+
+.screen {
+    background-color: rgb(5%, 5%, 5%);
     height: 15vw;
     width: 100%;
     border-radius: 5px;
@@ -60,28 +135,34 @@ body{
     align-items: end;
     justify-content: baseline;
 }
-.screen .old{
-    background-color: rgb(5%,5%,5%);
+
+.screen .old {
+    background-color: rgb(5%, 5%, 5%);
     box-shadow: 0 0 0;
     font-size: 150%;
 }
-.screen .new{
-    background-color: rgb(5%,5%,5%);
+
+.screen .new {
+    background-color: rgb(5%, 5%, 5%);
     box-shadow: 0 0 0;
     font-size: 200%;
     height: 3vw;
 }
-.big{
+
+.big {
     flex: 2.75 1 0;
     height: 2vw;
 }
-.small{
+
+.small {
     flex: 1 1 0;
     height: 2vw;
 }
-.calculator div div.equal{
+
+.calculator div div.equal {
     background-color: coral;
 }
-.calculator div div.edge{
+
+.calculator div div.edge {
     background-color: cornflowerblue;
 }

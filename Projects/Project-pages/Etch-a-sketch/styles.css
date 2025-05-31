@@ -1,6 +1,83 @@
-body{
+:root {
+    --bg: #F8FAFC;
+    --text-primary: #1E293B;
+    --text-secondary: #64748B;
+    --accent: #3B82F6;
+    --accent-hover: #2563EB;
+    --highlight: #FBBF24;
+
+    --card-bg: #FFFFFF;
+    --card-border: #E2E8F0;
+
+    --header-bg: #1E40AF;
+    --header-text: #FFFFFF;
+    --header-link: #FBBF24;
+    --header-link-hover: #FFE082;
+
+    --footer-bg: #E5E7EB;
+    --footer-text: #374151;
+    --footer-link: #3B82F6;
+    --footer-link-hover: #2563EB;
+}
+
+body {
+    padding: 0;
+    margin: 0;
+    min-height: 100vh;
+    font-family: 'Inter', 'Roboto', Arial, sans-serif;
+    font-weight: 400;
+    line-height: 1.5;
+
+}
+
+
+/*Header*/
+header {
+    background-color: var(--header-bg);
+    color: var(--header-text);
+    height: 10vh;
+    width: 100vw;
+    top: 0;
+    left: 0;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    align-items: center;
+}
+
+.logo {
+    height: 9vw;
+    max-height: 7.5vh;
+    width: 9vw;
+    max-width: 7.5vh;
+}
+
+.menu {
+    height: 9vw;
+    max-height: 7.5vh;
+    width: 9vw;
+    max-width: 7.5vh;
+    border-radius: 5px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    align-items: center;
+}
+
+.menu:hover {
+    background-color: #213885;
+}
+
+.menu .line {
+    height: 10%;
+    width: 75%;
+    background-color: var(--header-text);
+    border-radius: 5px;
+}
+
+main {
     font-family: 'Overpass', sans-serif;
-    display:flex; 
+    display: flex;
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
@@ -10,10 +87,12 @@ body{
     background-color: midnightblue;
     color: white;
 }
-hr{
+
+hr {
     width: 100%;
 }
-.header{
+
+.header {
     height: 60vw;
     padding: 2.5vw;
     display: flex;
@@ -27,7 +106,8 @@ hr{
     justify-content: center;
     align-items: baseline;
 }
-button{
+
+button {
     background-color: midnightblue;
     border-style: solid;
     border-radius: 5px;
@@ -35,7 +115,8 @@ button{
     color: white;
     width: 100%;
 }
-.container{
+
+.container {
     height: 60vw;
     width: 60vw;
     display: flex;
@@ -43,7 +124,7 @@ button{
     flex-wrap: wrap;
 }
 
-.gridBox{
+.gridBox {
     background-color: grey;
     border-style: solid;
     border-color: white;
@@ -51,7 +132,7 @@ button{
     box-sizing: border-box;
 }
 
-.activated{
+.activated {
     border-style: solid;
     border-color: white;
     border-width: 1px;
