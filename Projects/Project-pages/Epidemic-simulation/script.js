@@ -2,7 +2,7 @@ let n = 250;
 let inf = 10;
 let b = 0.9;
 let g = 0.15;
-const tempsEtude = 10000000;
+const tempsEtude = 100000;
 
 //Query selectors
 const btnI = document.querySelector(".i");
@@ -10,6 +10,7 @@ const btnN = document.querySelector(".n");
 const btnB = document.querySelector(".b");
 const btnG = document.querySelector(".g");
 const btnR = document.querySelector(".r");
+let points = 0;
 //Donc R0 = 4/3
 
 let etat = {
@@ -111,31 +112,62 @@ Place un point de coordonnées (t,i)
 Paramètres : Etat actuel
 Retourne :  Rien
 */
-function ajouterPoint(etat) {
-    const graphe = document.getElementById("graphe");
 
-    const tMax = tempsEtude;     // plage temporelle
-    const iMax = n;              // maximum de i (au départ)
 
-    const x = (etat.tempsEcoule / tMax) * 1000; // 1000 = largeur du graphe
-    const y = (1 - etat.i / iMax) * 400;        // 400 = hauteur du graphe (haut = i max)
+function ajouterPoint(etat, fenetreTemps) {
+    let graphe = document.querySelector("#graphe");
 
-    const point = document.createElement("div");
-    point.className = "point";
-    point.style.left = `${x}px`;
-    point.style.top = `${y}px`;
+    let x = (etat.tempsEcoule / fenetreTemps); // Donner x entre 0 et 1
+    let yr = (1 - etat.i / n);        // Donner y entre 0 et 1
+    let yb = (1 - etat.s / n);        // Donner y entre 0 et 1
+    let yv = (1 - (n - etat.i - etat.s) / n);        // Donner y entre 0 et 1
 
-    graphe.appendChild(point);
+    let pointR = document.createElement("div");
+    pointR.className = "point-rouge";
+    pointR.style.left = `calc(${x}*80vw)`;
+    pointR.style.top = `calc(${yr}*400px)`;
+    pointR.innerHTML = "<table><tr><td>Infected :</td><td>" + etat.i + "</td></tr><tr><td>Time since beginning :</td><td>" + etat.tempsEcoule + "</td></tr></table>";
+    let pointB = document.createElement("div");
+    pointB.className = "point-bleu";
+    pointB.style.left = `calc(${x}*80vw)`;
+    pointB.style.top = `calc(${yb}*400px)`;
+    pointB.innerHTML = "<table><tr><td>Not infected :</td><td>" + etat.s + "</td></tr><tr><td>Time since beginning :</td><td>" + etat.tempsEcoule + "</td></tr></table>";
+    let pointV = document.createElement("div");
+    pointV.className = "point-vert";
+    pointV.style.left = `calc(${x}*80vw)`;
+    pointV.style.top = `calc(${yv}*400px)`;
+    pointV.innerHTML = "<table><tr><td>Cured :</td><td>" + (n - etat.i - etat.s) + "</td></tr><tr><td>Time since beginning :</td><td>" + etat.tempsEcoule + "</td></tr></table>";
+
+
+
+    graphe.appendChild(pointR);
+    graphe.appendChild(pointB);
+    graphe.appendChild(pointV);
 }
 
 
-
-//Fonctions écrites par ChatGPT
-
+/*Trace un graphe à partir d'un array d'états*/
+/*Version Thomas*/
 
 
 function tracerGraphe(arrayEtats) {
-    const graphe = document.getElementById("graphe");
+    let fenetreTemps = arrayEtats[arrayEtats.length - 1].tempsEcoule;
+    let graphe = document.querySelector("#graphe");
+    graphe.innerHTML = '<div class="graphLabel"><div><div class="point-rouge"></div><div class="meaning">  | Infected</div></div><div><div class="point-bleu"></div><div class="meaning">  | Not infected</div></div><div><div class="point-vert"></div><div class="meaning">  | Cured</div></div></div>';
+    console.log("Largeur du graphe:", graphe.clientWidth);
+    console.log("salut");
+    for (let i = 0; arrayEtats[i] !== undefined; i++) {
+        ajouterPoint(arrayEtats[i], fenetreTemps);
+    }
+}
+function labelPoint(e) {
+    e.target.classList.toggle("active");
+    console.log("hovered");
+}
+/*Version ChatGPT*/
+/*
+function tracerGraphe(arrayEtats) {
+    let graphe = document.querySelector("#graphe");
     graphe.innerHTML = ""; // vider le graphe
 
     // Trouver index du premier état où i = 0
@@ -167,20 +199,26 @@ function tracerGraphe(arrayEtats) {
         point.style.backgroundColor = color;
         graphe.appendChild(point);
     }
+    
+// Tracer S en bleu, I en rouge, R en vert
+arrayEtats.forEach(etat => {
+    const x = etat.tempsEcoule * scaleX;
+    const yS = hauteur - (etat.s * scaleY);
+    const yI = hauteur - (etat.i * scaleY);
+    const r = n - (etat.s + etat.i);
+    const yR = hauteur - (r * scaleY);
 
-    // Tracer S en bleu, I en rouge, R en vert
-    arrayEtats.forEach(etat => {
-        const x = etat.tempsEcoule * scaleX;
-        const yS = hauteur - (etat.s * scaleY);
-        const yI = hauteur - (etat.i * scaleY);
-        const r = n - (etat.s + etat.i);
-        const yR = hauteur - (r * scaleY);
+    creerPoint(x, yS, "blue");   // S en bleu
+    creerPoint(x, yI, "red");    // I en rouge
+    creerPoint(x, yR, "green");  // R en vert
+});
+}*/
+function afficheCoordonnees(etat) {
+    if (etat.target === "") {
 
-        creerPoint(x, yS, "blue");   // S en bleu
-        creerPoint(x, yI, "red");    // I en rouge
-        creerPoint(x, yR, "green");  // R en vert
-    });
+    }
 }
+
 
 
 
@@ -207,7 +245,13 @@ function epidemic() {
     }
     console.log(arrayEtats);
     tracerGraphe(arrayEtats);
+    points = document.querySelectorAll('[class^="point"]');
+    points.forEach(unPoint => {
+        unPoint.addEventListener("mouseover", labelPoint);
+        unPoint.addEventListener("mouseout", labelPoint);
+    });
 }
+
 epidemic();
 
 btnI.addEventListener("click", getI);

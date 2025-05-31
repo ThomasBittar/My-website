@@ -1,3 +1,25 @@
+/*------------------------------------------------
+                    PLAN DU CSS
+--------------------------------------------------
+1. Variables CSS globales (:root)
+2. Styles globaux du body
+3. Header
+   - Structure générale
+   - Logo
+   - Menu burger
+4. Main
+5. Graphe
+   - Conteneur principal (#graphe)
+   - Labels et légendes (.graphLabel, .point-xxx)
+6. Boutons
+   - Style général
+   - Variantes et états (hover, disabled, secondaire)
+7. Footer
+------------------------------------------------*/
+
+/*------------------------------------------------
+1. VARIABLES GLOBALES
+------------------------------------------------*/
 :root {
   --bg: #F8FAFC;
   --text-primary: #1E293B;
@@ -20,6 +42,9 @@
   --footer-link-hover: #2563EB;
 }
 
+/*------------------------------------------------
+2. STYLES GLOBAUX DU BODY
+------------------------------------------------*/
 body {
   padding: 0;
   margin: 0;
@@ -31,11 +56,12 @@ body {
   font-family: 'Inter', 'Roboto', Arial, sans-serif;
   font-weight: 400;
   line-height: 1.5;
-
 }
 
-
-/*Header*/
+/*------------------------------------------------
+3. HEADER
+------------------------------------------------*/
+/* Conteneur principal du header */
 header {
   background-color: var(--header-bg);
   color: var(--header-text);
@@ -49,6 +75,7 @@ header {
   align-items: center;
 }
 
+/* Logo */
 .logo {
   height: 9vw;
   max-height: 7.5vh;
@@ -56,6 +83,7 @@ header {
   max-width: 7.5vh;
 }
 
+/* Menu burger (icône menu) */
 .menu {
   height: 9vw;
   max-height: 7.5vh;
@@ -68,10 +96,12 @@ header {
   align-items: center;
 }
 
+/* Effet au survol du menu */
 .menu:hover {
   background-color: #213885;
 }
 
+/* Chaque ligne du menu burger */
 .menu .line {
   height: 10%;
   width: 75%;
@@ -79,8 +109,9 @@ header {
   border-radius: 5px;
 }
 
-/* MAIN */
-
+/*------------------------------------------------
+4. MAIN
+------------------------------------------------*/
 main {
   background-color: var(--bg);
   color: var(--text-primary);
@@ -96,25 +127,152 @@ main {
   padding-bottom: 5vh;
 }
 
-/* GRAPHE */
+/*------------------------------------------------
+5. GRAPHE
+------------------------------------------------*/
+/* Conteneur principal du graphe */
 #graphe {
   position: relative;
   width: 90vw;
   height: 400px;
-  background: #f0f0f0;
+  background: var(--bg);
   border: 1px solid #ccc;
+  border-width: 4px;
+  border-top-width: 1px;
+  border-right-width: 1px;
   margin: 20px auto;
-  overflow: hidden;
+  box-sizing: content-box;
 }
 
-.point {
+/* Label explicatif du graphe */
+.graphLabel {
+  padding: 5px;
+  background-color: var(--card-bg);
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  width: fit-content;
+  border-style: solid;
+  border-color: var(--card-border);
+  border-radius: 10px;
+  border-width: 1px;
+  font-size: small;
+  box-shadow: 5px 5px 5px #ddd;
+  white-space: nowrap;
+  z-index: 100;
+}
+
+/* Conteneur des lignes dans le label */
+.graphLabel div {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  gap: 5px;
+  align-items: center;
+  z-index: 0;
+}
+
+/* Signification du point */
+.meaning {
+  flex: 1;
+}
+
+/* Positionnement relatif des points dans les légendes */
+.graphLabel div div.point-rouge,
+.graphLabel div div.point-bleu,
+.graphLabel div div.point-vert {
+  z-index: 0;
+  position: relative;
+}
+
+/* Points rouges */
+.point-rouge {
   position: absolute;
   width: 4px;
   height: 4px;
   background: red;
   border-radius: 50%;
+  z-index: 1;
+  overflow: hidden;
 }
 
+/* Etat actif pour point rouge */
+.point-rouge.active {
+  overflow: visible;
+  z-index: 10;
+}
+
+/* Style tableau sous point rouge */
+.point-rouge table {
+  border-style: solid;
+  border-color: red;
+  border-radius: 10px;
+  font-size: small;
+  background-color: var(--card-bg);
+  box-shadow: 5px 5px 5px var(--card-border);
+  white-space: nowrap;
+}
+
+/* Points verts */
+.point-vert {
+  position: absolute;
+  width: 4px;
+  height: 4px;
+  background: greenyellow;
+  border-radius: 50%;
+  z-index: 2;
+  overflow: hidden;
+}
+
+/* Etat actif pour point vert */
+.point-vert.active {
+  overflow: visible;
+  z-index: 10;
+}
+
+/* Style tableau sous point vert */
+.point-vert table {
+  border-style: solid;
+  border-color: greenyellow;
+  border-radius: 10px;
+  font-size: small;
+  background-color: var(--card-bg);
+  box-shadow: 5px 5px 5px var(--card-border);
+  white-space: nowrap;
+}
+
+/* Points bleus */
+.point-bleu {
+  position: absolute;
+  width: 4px;
+  height: 4px;
+  background: blue;
+  border-radius: 50%;
+  z-index: 3;
+  overflow: hidden;
+}
+
+/* Etat actif pour point bleu */
+.point-bleu.active {
+  overflow: visible;
+  z-index: 10;
+}
+
+/* Style tableau sous point bleu */
+.point-bleu table {
+  border-style: solid;
+  border-color: blue;
+  border-radius: 10px;
+  font-size: small;
+  background-color: var(--card-bg);
+  box-shadow: 5px 5px 5px var(--card-border);
+  white-space: nowrap;
+}
+
+/*------------------------------------------------
+6. BOUTONS
+------------------------------------------------*/
+/* Conteneur des boutons */
 .buttons {
   width: 90vw;
   display: flex;
@@ -122,12 +280,13 @@ main {
   justify-content: space-around;
 }
 
+/* Boutons dans le conteneur */
 .buttons button {
   width: 15vw;
   height: auto;
 }
 
-/* Boutons généraux */
+/* Style général des boutons */
 button {
   background-color: var(--accent);
   color: #fff;
@@ -141,13 +300,13 @@ button {
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
-/* Hover */
+/* Effet au survol des boutons */
 button:hover {
   background-color: var(--accent-hover);
   transform: translateY(-2px);
 }
 
-/* Bouton désactivé */
+/* Boutons désactivés */
 button:disabled {
   background-color: var(--text-secondary);
   color: #ccc;
@@ -156,7 +315,7 @@ button:disabled {
   transform: none;
 }
 
-/* Variante secondaire (ex : bouton clair) */
+/* Variante secondaire de bouton (ex : clair) */
 .button-secondary {
   background-color: var(--card-bg);
   color: var(--accent);
@@ -167,4 +326,27 @@ button:disabled {
   background-color: var(--highlight);
   border-color: var(--accent-hover);
   color: var(--text-primary);
+}
+
+/*------------------------------------------------
+7. FOOTER
+------------------------------------------------*/
+footer {
+  font-size: 0.8em;
+  color: #666;
+  text-align: center;
+  padding: 10px 0;
+  border-top: 1px solid #ddd;
+  font-family: Arial, sans-serif;
+}
+
+/* Liens dans la citation du footer */
+footer .citation a {
+  color: #3366cc;
+  text-decoration: none;
+}
+
+/* Hover des liens dans la citation */
+footer .citation a:hover {
+  text-decoration: underline;
 }

@@ -16,6 +16,7 @@
         <div></div>
         <h1 class="page-title">Thomas' website</h1>
         <div></div>
+
         <div class="menu">
             <div class="line"></div>
             <div class="line"></div>
@@ -23,7 +24,22 @@
         </div>
     </header>
     <main>
-        <div id="graphe"></div>
+        <div id="graphe">
+            <div class="graphLabel">
+                <div>
+                    <div class="point-rouge"></div>
+                    <div class="meaning"> | Infected</div>
+                </div>
+                <div>
+                    <div class="point-bleu"></div>
+                    <div class="meaning"> | Not infected</div>
+                </div>
+                <div>
+                    <div class="point-vert"></div>
+                    <div class="meaning"> | Cured</div>
+                </div>
+            </div>
+        </div>
         <div class="buttons">
             <button class="i">Set the amount of infected people</button>
             <button class="n">Set a population size</button>
@@ -32,6 +48,16 @@
             <button class="r">Relaunch the epidemic</button>
         </div>
     </main>
+    <footer>
+        <p class="citation">
+            Algorithme issu de : Allen, L. J. S. (2017).
+            <em>A primer on stochastic epidemic models: formulation, numerical simulation, and analysis.</em>
+            <a href="https://doi.org/10.1016/j.idm.2017.03.001" target="_blank" rel="noopener noreferrer">Infectious
+                Disease Modelling, 2(2), 128-142.</a>
+        </p>
+    </footer>
+
+
     <script src="script.js"></script>
 </body>
 
