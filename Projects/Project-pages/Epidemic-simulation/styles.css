@@ -14,7 +14,8 @@
 6. Boutons
    - Style général
    - Variantes et états (hover, disabled, secondaire)
-7. Footer
+7. Cards
+8. Footer
 ------------------------------------------------*/
 
 /*------------------------------------------------
@@ -56,6 +57,8 @@ body {
   font-family: 'Inter', 'Roboto', Arial, sans-serif;
   font-weight: 400;
   line-height: 1.5;
+  overflow-x: hidden;
+  height: fit-content;
 }
 
 /*------------------------------------------------
@@ -137,11 +140,11 @@ main {
   height: 400px;
   background: var(--bg);
   border: 1px solid #ccc;
-  border-width: 4px;
-  border-top-width: 1px;
-  border-right-width: 1px;
+  border-radius: 5px;
   margin: 20px auto;
   box-sizing: content-box;
+  padding: 2px;
+  overflow: visible;
 }
 
 /* Label explicatif du graphe */
@@ -188,26 +191,35 @@ main {
 /* Points rouges */
 .point-rouge {
   position: absolute;
-  width: 4px;
-  height: 4px;
-  background: red;
+  width: 5px;
+  height: 5px;
+  background: rgb(255, 150, 150);
+  border-style: solid;
+  border-color: rgb(255, 0, 0);
+  border-width: 0.1px;
   border-radius: 50%;
   z-index: 1;
   overflow: hidden;
+  transition: transform 0.2s ease;
 }
 
 /* Etat actif pour point rouge */
 .point-rouge.active {
   overflow: visible;
   z-index: 10;
+  transform: scale(2);
 }
 
 /* Style tableau sous point rouge */
 .point-rouge table {
+  position: absolute;
+  top: 10px;
+  left: 10px;
   border-style: solid;
+  border-width: 1px;
   border-color: red;
   border-radius: 10px;
-  font-size: small;
+  font-size: 0.5rem;
   background-color: var(--card-bg);
   box-shadow: 5px 5px 5px var(--card-border);
   white-space: nowrap;
@@ -216,57 +228,75 @@ main {
 /* Points verts */
 .point-vert {
   position: absolute;
-  width: 4px;
-  height: 4px;
-  background: greenyellow;
+  width: 5px;
+  height: 5px;
+  background: rgb(150, 255, 150);
+  border-style: solid;
+  border-color: rgb(0, 255, 0);
+  border-width: 0.1px;
   border-radius: 50%;
   z-index: 2;
   overflow: hidden;
+  transition: transform 0.2s ease;
 }
 
 /* Etat actif pour point vert */
 .point-vert.active {
   overflow: visible;
   z-index: 10;
+  transform: scale(2);
 }
 
 /* Style tableau sous point vert */
 .point-vert table {
   border-style: solid;
-  border-color: greenyellow;
+  border-width: 1px;
+  border-color: rgb(0, 255, 0);
   border-radius: 10px;
-  font-size: small;
+  font-size: 0.5rem;
   background-color: var(--card-bg);
   box-shadow: 5px 5px 5px var(--card-border);
   white-space: nowrap;
+  position: absolute;
+  top: 10px;
+  left: 10px;
 }
 
 /* Points bleus */
 .point-bleu {
   position: absolute;
-  width: 4px;
-  height: 4px;
-  background: blue;
+  width: 5px;
+  height: 5px;
+  background: rgb(150, 150, 255);
+  border-style: solid;
+  border-color: rgb(0, 0, 255);
+  border-width: 0.1px;
   border-radius: 50%;
   z-index: 3;
   overflow: hidden;
+  transition: transform 0.2s ease;
 }
 
 /* Etat actif pour point bleu */
 .point-bleu.active {
   overflow: visible;
   z-index: 10;
+  transform: scale(2);
 }
 
 /* Style tableau sous point bleu */
 .point-bleu table {
   border-style: solid;
+  border-width: 1px;
   border-color: blue;
   border-radius: 10px;
-  font-size: small;
+  font-size: 0.5rem;
   background-color: var(--card-bg);
   box-shadow: 5px 5px 5px var(--card-border);
   white-space: nowrap;
+  position: absolute;
+  top: 10px;
+  left: 10px;
 }
 
 /*------------------------------------------------
@@ -278,11 +308,13 @@ main {
   display: flex;
   flex-direction: row;
   justify-content: space-around;
+  flex-wrap: wrap;
 }
 
 /* Boutons dans le conteneur */
 .buttons button {
   width: 15vw;
+  min-width: 150px;
   height: auto;
 }
 
@@ -298,6 +330,7 @@ button {
   cursor: pointer;
   transition: background-color 0.3s ease, transform 0.2s ease;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  margin: 10px;
 }
 
 /* Effet au survol des boutons */
@@ -326,6 +359,38 @@ button:disabled {
   background-color: var(--highlight);
   border-color: var(--accent-hover);
   color: var(--text-primary);
+}
+
+/*------------------------------------------------
+7. CARDS
+------------------------------------------------*/
+
+/*Cards*/
+.card {
+  background-color: var(--card-bg);
+  border-style: solid;
+  border-color: var(--card-border);
+  border-width: 1px;
+  border-radius: 10px;
+  box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.1);
+  box-sizing: border-box;
+  padding: 10px;
+}
+
+.card h1 {
+  font-size: 2rem;
+  height: fit-content;
+  padding: 0;
+  margin: 0;
+  text-align: center;
+}
+
+.card .divider {
+  width: 100%;
+  height: 0;
+  border-style: solid;
+  border-color: var(--card-border);
+  border-width: 1px;
 }
 
 /*------------------------------------------------

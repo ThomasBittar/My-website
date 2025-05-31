@@ -250,6 +250,8 @@ function epidemic() {
         unPoint.addEventListener("mouseover", labelPoint);
         unPoint.addEventListener("mouseout", labelPoint);
     });
+    const values = document.querySelector(".card p");
+    values.innerHTML = "<b>The current values are :</b><br><ul><li><i>Initial infections : </i>" + inf + "</li><br><li><i>Population size : </i>" + n + "</li><br><li><i>Transmission rate β : </i>" + b + "</li><br><li><i>Healing rate γ : </i>" + g + "</li></ul>";
 }
 
 epidemic();
