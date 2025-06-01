@@ -47,7 +47,7 @@
 2. STYLES GLOBAUX
 ------------------------------------------------*/
 :root {
-  overflow: hidden;
+  overflow-x: hidden;
 }
 
 body {
