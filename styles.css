@@ -1,4 +1,130 @@
+/*
+=== Mode d’emploi de ce document CSS ===
+
+1. Variables globales (:root)
+-----------------------------
+Définissent les couleurs et styles réutilisables.
+Modifier ici impacte toute la page.
+
+2. Body
+--------
+Applique la mise en page principale :
+- flex-colonne
+- centrage vertical et horizontal
+- police ‘Inter’ ou Roboto
+
+3. Header (barre de navigation)
+-------------------------------
+.header-bg : fond bleu foncé  
+.header-text : texte blanc  
+
+Classes importantes :  
+.logo  
+- Image/logo dans l’en-tête, taille fixe.
+
+.menu  
+- Bouton menu hamburger (3 lignes)  
+- Survol change couleur fond.
+
+.menu-wrapper  
+- Conteneur du menu déroulant (dropdown).
+
+.drop-down-menu  
+- Menu déroulant, caché par défaut, visible au survol de .menu-wrapper
+
+Exemple HTML :  
+<header>
+  <img class="logo" src="logo.png" alt="Logo">
+  <div class="menu-wrapper">
+    <div class="menu">
+      <div class="line"></div>
+      <div class="line"></div>
+      <div class="line"></div>
+    </div>
+    <nav class="drop-down-menu">
+      <a href="#"><div>Accueil</div></a>
+      <a href="#"><div>Contact</div></a>
+    </nav>
+  </div>
+</header>
+
+4. Main (contenu principal)
+---------------------------
+Disposition flex en ligne, avec espaces entre éléments.
+
+Exemple HTML :  
+<main>
+  <section class="card">
+    <h1>Titre</h1>
+    <div class="divider"></div>
+    <p>Texte...</p>
+  </section>
+  <section class="slideshow">
+    <!-- Diaporama -->
+  </section>
+</main>
+
+5. Boutons
+-----------
+- Classe .button pour bouton principal (fond bleu, texte blanc)
+- Classe .button-secondary pour bouton clair (fond blanc, bord bleu)
+
+Exemple HTML :  
+<button class="button">Envoyer</button>  
+<button class="button-secondary">Annuler</button>
+
+6. Slideshow (diaporama)
+-------------------------
+.slideshow : conteneur avec bordure et ombre  
+.project : slide individuel (image cachée par défaut)  
+.project.active : slide visible  
+
+.caption : légende sur image avec dégradé sombre.
+
+Exemple HTML :  
+<div class="slideshow">
+  <div class="project active">
+    <img src="image1.jpg" alt="Image 1">
+    <div class="caption">
+      <div class="description">Description de l'image 1</div>
+    </div>
+  </div>
+  <div class="project">
+    <img src="image2.jpg" alt="Image 2">
+    <div class="caption">
+      <div class="description">Description de l'image 2</div>
+    </div>
+  </div>
+</div>
+
+7. Cards (cartes d’information)
+-------------------------------
+.card : conteneur avec bordure, ombre et taille fixe  
+.card h1 : titre centré  
+.divider : ligne séparatrice horizontale
+
+Exemple HTML :  
+<section class="card">
+  <h1>Carte 1</h1>
+  <div class="divider"></div>
+  <p>Contenu de la carte.</p>
+</section>
+
+8. Footer (pied de page)
+-------------------------
+Conserve une hauteur fixe avec fond gris clair.
+
+Exemple HTML :  
+<footer>
+  <p>© 2025 Mon site</p>
+</footer>
+
+*/
+
+
+
 :root {
+    /* Couleurs principales */
     --bg: #F8FAFC;
     --text-primary: #1E293B;
     --text-secondary: #64748B;
@@ -6,19 +132,40 @@
     --accent-hover: #2563EB;
     --highlight: #FBBF24;
 
+    /* Couleurs cartes et bordures */
     --card-bg: #FFFFFF;
     --card-border: #E2E8F0;
 
+    /* Couleurs header */
     --header-bg: #1E40AF;
     --header-text: #FFFFFF;
     --header-link: #FBBF24;
     --header-link-hover: #FFE082;
 
+    /* Couleurs footer */
     --footer-bg: #E5E7EB;
     --footer-text: #374151;
     --footer-link: #3B82F6;
     --footer-link-hover: #2563EB;
 }
+
+/* 
+====================================
+Plan du fichier CSS
+====================================
+
+1. Reset et styles généraux (body, font, etc.)
+2. Header
+   2.1 Structure principale (header, logo, menu)
+   2.2 Menu hamburger et dropdown
+3. Main (contenu principal)
+4. Boutons (styles généraux, hover, désactivé, secondaires)
+5. Slide show
+6. Cards
+7. Footer
+
+====================================
+*/
 
 body {
     padding: 0;
@@ -31,11 +178,11 @@ body {
     font-family: 'Inter', 'Roboto', Arial, sans-serif;
     font-weight: 400;
     line-height: 1.5;
-
 }
 
-
-/*Header*/
+/*======================
+2. Header
+======================*/
 header {
     background-color: var(--header-bg);
     color: var(--header-text);
@@ -79,26 +226,20 @@ header {
     border-radius: 5px;
 }
 
-
 /* Dropdown menu */
 
 .menu-wrapper {
-    height: 9vw;
-    max-height: 7.5vh;
-    width: 9vw;
-    max-width: 7.5vh;
-    overflow: hidden;
-}
-
-.menu-wrapper:hover {
-    padding-top: 5px;
-    padding-bottom: 5px;
     height: calc(9vw+10px);
     max-height: calc(7.5vh+10px);
-    overflow: visible;
+    width: 9vw;
+    max-width: 7.5vh;
 }
 
-.drop-down-menu {
+.menu-wrapper .drop-down-menu {
+    display: none;
+    position: fixed;
+    right: 5vw;
+    top: min(calc(7.5vh+10px), calc(9vw+10px));
     width: 100px;
     padding: 5px;
     background-color: var(--card-bg);
@@ -108,10 +249,21 @@ header {
     border-radius: 10px;
     box-shadow: 5px 5px 5px var(--card-border);
     color: var(--text-primary);
-    display: block;
     margin-top: 15px;
-    transition: transform ease 0.2s;
+    transition: transform ease-in-out 0.2s;
+}
 
+.menu-wrapper:hover {
+    padding-top: 5px;
+    padding-bottom: 5px;
+    height: calc(9vw+10px);
+    max-height: calc(7.5vh+10px);
+}
+
+.menu-wrapper:hover .drop-down-menu {
+    display: block;
+    position: fixed;
+    transform: translate(0, -10px);
 }
 
 .menu-wrapper a {
@@ -119,22 +271,22 @@ header {
     text-decoration: none;
 }
 
-.menu-wrapper:hover .drop-down-menu {
-    transform: translate(0, -10px);
-
-}
-
-.drop-down-menu div {
+.drop-down-menu a div {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
+    border-radius: 5px;
+    padding: 2.5px;
 }
 
+.drop-down-menu a div:hover {
+    background-color: #ddd;
+}
 
-/*Main*/
-
-
+/*======================
+3. Main
+======================*/
 main {
     background-color: var(--bg);
     color: var(--text-primary);
@@ -150,7 +302,9 @@ main {
     padding-bottom: 5vh;
 }
 
-/* Boutons généraux */
+/*======================
+4. Boutons
+======================*/
 button {
     background-color: var(--accent);
     color: #fff;
@@ -164,13 +318,11 @@ button {
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
-/* Hover */
 button:hover {
     background-color: var(--accent-hover);
     transform: translateY(-2px);
 }
 
-/* Bouton désactivé */
 button:disabled {
     background-color: var(--text-secondary);
     color: #ccc;
@@ -179,7 +331,6 @@ button:disabled {
     transform: none;
 }
 
-/* Variante secondaire (ex : bouton clair) */
 .button-secondary {
     background-color: var(--card-bg);
     color: var(--accent);
@@ -192,8 +343,9 @@ button:disabled {
     color: var(--text-primary);
 }
 
-
-/*Slide show*/
+/*======================
+5. Slide show
+======================*/
 .slideshow {
     background-color: var(--card-bg);
     height: fit-content;
@@ -261,7 +413,9 @@ button:disabled {
     overflow: auto;
 }
 
-/*Cards*/
+/*======================
+6. Cards
+======================*/
 .card {
     background-color: var(--card-bg);
     height: 40vw;
@@ -293,7 +447,9 @@ button:disabled {
     border-width: 1px;
 }
 
-/*Footer*/
+/*======================
+7. Footer
+======================*/
 .footer-container {
     flex: 1;
     display: flex;

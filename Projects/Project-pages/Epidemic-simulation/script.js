@@ -110,7 +110,7 @@ function etatSuivant(etat) {
 
 /*
 Place un point de coordonnées (t,i)
-Paramètres : Etat actuel
+Paramètres : Etat actuel, fenetre temporelle
 Retourne :  Rien
 */
 
@@ -147,8 +147,10 @@ function ajouterPoint(etat, fenetreTemps) {
 }
 
 
-/*Trace un graphe à partir d'un array d'états*/
-/*Version Thomas*/
+/*Trace un graphe à partir d'un array d'états
+Paramètres : Array des etats
+Retourne : Rien
+*/
 
 
 function tracerGraphe(arrayEtats) {
@@ -161,68 +163,21 @@ function tracerGraphe(arrayEtats) {
         ajouterPoint(arrayEtats[i], fenetreTemps);
     }
 }
+
+/*Fait apparître les coordonnées d'un point survolé
+Paramètres : Evènement
+Retourne : Rien
+*/
 function labelPoint(e) {
     e.target.classList.toggle("active");
     console.log("hovered");
 }
-/*Version ChatGPT*/
-/*
-function tracerGraphe(arrayEtats) {
-    let graphe = document.querySelector("#graphe");
-    graphe.innerHTML = ""; // vider le graphe
-
-    // Trouver index du premier état où i = 0
-    let idxZero = arrayEtats.findIndex(etat => etat.i === 0);
-    if (idxZero === -1) idxZero = arrayEtats.length - 1;
-
-    const tempsMax = arrayEtats[idxZero].tempsEcoule;
-    const largeur = graphe.clientWidth;
-    const hauteur = graphe.clientHeight;
-
-    // Échelle X
-    const scaleX = largeur / tempsMax;
-
-    // Calcul max pour i, s et r
-    const maxI = Math.max(...arrayEtats.map(e => e.i));
-    const maxS = Math.max(...arrayEtats.map(e => e.s));
-    const maxR = Math.max(...arrayEtats.map(e => n - (e.s + e.i)));
-    const maxY = Math.max(maxI, maxS, maxR);
-
-    // Échelle Y
-    const scaleY = hauteur / maxY;
-
-    // Fonction pour créer un point coloré
-    function creerPoint(x, y, color) {
-        const point = document.createElement("div");
-        point.classList.add("point");
-        point.style.left = `${x}px`;
-        point.style.top = `${y}px`;
-        point.style.backgroundColor = color;
-        graphe.appendChild(point);
-    }
-    
-// Tracer S en bleu, I en rouge, R en vert
-arrayEtats.forEach(etat => {
-    const x = etat.tempsEcoule * scaleX;
-    const yS = hauteur - (etat.s * scaleY);
-    const yI = hauteur - (etat.i * scaleY);
-    const r = n - (etat.s + etat.i);
-    const yR = hauteur - (r * scaleY);
-
-    creerPoint(x, yS, "blue");   // S en bleu
-    creerPoint(x, yI, "red");    // I en rouge
-    creerPoint(x, yR, "green");  // R en vert
-});
-}*/
-function afficheCoordonnees(etat) {
-    if (etat.target === "") {
-
-    }
-}
 
 
-
-
+/*Lance l'épidémie: Calcule les états, trace le graphique, modifie le texte
+Paramètres : Rien
+Retourne : Rien
+*/
 
 function epidemic() {
     etat = {
