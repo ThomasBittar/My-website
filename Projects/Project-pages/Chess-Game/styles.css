@@ -1,0 +1,35 @@
+.board {
+    height: 80vh;
+    max-height: 80vw;
+    width: 80vh;
+    max-width: 80vw;
+    display: flex;
+    flex-wrap: wrap;
+    border-style: solid;
+}
+
+.board div {
+    z-index: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.board div img {
+    height: 7.5vh;
+    max-height: 7.5vw;
+    width: 7.5vh;
+    max-width: 7.5vw;
+    z-index: 2;
+
+}
+
+.board div img.target {
+    height: 5vh;
+    max-height: 5vw;
+    width: 5vh;
+    max-width: 5vw;
+    z-index: 3;
+    position: absolute;
+    opacity: 0.75;
+}
