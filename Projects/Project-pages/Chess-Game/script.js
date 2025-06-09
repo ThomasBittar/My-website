@@ -360,165 +360,210 @@ document.addEventListener('DOMContentLoaded', () => {
                     break;
                 case 'images/fou1.png': {
                     //Déplacements sauf captures
-                    let i = column + 1;
-                    let j = row + 1;
-                    lastDiag1 = [column + 1, row + 1];
-                    console.log(i, j, (8 - j) * 8 + i - 1);
-                    while (i <= 8 && j <= 8 && !grid[(8 - j) * 8 + i - 1].hasChildNodes()) {
-                        let cible = document.createElement('img');
-                        cible.setAttribute('src', 'images/cible1.png');
-                        cible.classList.add('target');
-                        grid[(8 - j) * 8 + i - 1].appendChild(cible);
-                        i++;
-                        j++;
-                        let a = i;
-                        let b = j;
-                        lastDiag1 = [a, b];
+                    rowIterator = row + 1;
+                    columnIterator = column + 1;
+                    do {
+                        if (rowIterator <= 8 && columnIterator <= 8 && rowIterator > 0 && columnIterator > 0 && !grid[(8 - rowIterator) * 8 + columnIterator - 1].hasChildNodes()) {
+                            let cible = document.createElement('img');
+                            cible.setAttribute('src', 'images/cible1.png');
+                            cible.classList.add('target');
+                            grid[(8 - rowIterator) * 8 + columnIterator - 1].appendChild(cible);
+                            rowIterator++;
+                            columnIterator++;
+                        }
+                        lastDiag1 = [rowIterator, columnIterator];
+                    } while (rowIterator <= 8 && columnIterator <= 8 && !grid[(8 - rowIterator) * 8 + columnIterator - 1].hasChildNodes());
+                    rowIterator = row - 1;
+                    columnIterator = column - 1;
+                    do {
+                        if (rowIterator <= 8 && columnIterator <= 8 && rowIterator > 0 && columnIterator > 0 && !grid[(8 - rowIterator) * 8 + columnIterator - 1].hasChildNodes()) {
+                            let cible = document.createElement('img');
+                            cible.setAttribute('src', 'images/cible1.png');
+                            cible.classList.add('target');
+                            grid[(8 - rowIterator) * 8 + columnIterator - 1].appendChild(cible);
+                            rowIterator--;
+                            columnIterator--;
+                        }
+                        firstDiag1 = [rowIterator, columnIterator];
+
+                    } while (rowIterator > 0 && columnIterator > 0 && !grid[(8 - rowIterator) * 8 + columnIterator - 1].hasChildNodes());
+                    rowIterator = row + 1;
+                    columnIterator = column - 1;
+                    do {
+                        if (rowIterator <= 8 && columnIterator <= 8 && rowIterator > 0 && columnIterator > 0 && !grid[(8 - rowIterator) * 8 + columnIterator - 1].hasChildNodes()) {
+                            let cible = document.createElement('img');
+                            cible.setAttribute('src', 'images/cible1.png');
+                            cible.classList.add('target');
+                            grid[(8 - rowIterator) * 8 + columnIterator - 1].appendChild(cible);
+                            rowIterator++;
+                            columnIterator--;
+                        }
+                        lastDiag2 = [rowIterator, columnIterator];
+
+                    } while (rowIterator <= 8 && columnIterator > 0 && !grid[(8 - rowIterator) * 8 + columnIterator - 1].hasChildNodes());
+                    rowIterator = row - 1;
+                    columnIterator = column + 1;
+                    do {
+                        if (rowIterator <= 8 && columnIterator <= 8 && rowIterator > 0 && columnIterator > 0 && !grid[(8 - rowIterator) * 8 + columnIterator - 1].hasChildNodes()) {
+                            let cible = document.createElement('img');
+                            cible.setAttribute('src', 'images/cible1.png');
+                            cible.classList.add('target');
+                            grid[(8 - rowIterator) * 8 + columnIterator - 1].appendChild(cible);
+                            rowIterator--;
+                            columnIterator++;
+                        }
+                        firstDiag2 = [rowIterator, columnIterator];
+
+                    } while (rowIterator > 0 && columnIterator <= 8 && !grid[(8 - rowIterator) * 8 + columnIterator - 1].hasChildNodes());
+                    //Captures
+
+                    console.log(firstDiag1, lastDiag1, firstDiag2, lastDiag2);
+                    if (firstDiag1.every(val => (val <= 8 && val > 0))) {
+                        if (grid[(8 - firstDiag1[0]) * 8 + firstDiag1[1] - 1].hasChildNodes()) {
+                            if (grid[(8 - firstDiag1[0]) * 8 + firstDiag1[1] - 1].querySelector('.white')) {
+                                let cible = document.createElement('img');
+                                cible.setAttribute('src', 'images/cible1.png');
+                                cible.classList.add('target');
+                                grid[(8 - firstDiag1[0]) * 8 + firstDiag1[1] - 1].appendChild(cible);
+                            }
+                        }
                     }
-                    i = column - 1;
-                    j = row - 1;
-                    firstDiag1 = [column - 1, row - 1];
-                    console.log(i, j, (8 - j) * 8 + i - 1);
-                    while (i > 0 && j > 0 && !grid[(8 - j) * 8 + i - 1].hasChildNodes()) {
-                        let cible = document.createElement('img');
-                        cible.setAttribute('src', 'images/cible1.png');
-                        cible.classList.add('target');
-                        grid[(8 - j) * 8 + i - 1].appendChild(cible);
-                        i--;
-                        j--;
-                        let a = i;
-                        let b = j;
-                        firstDiag1 = [a, b];
+                    if (lastDiag1.every(val => (val <= 8 && val > 0))) {
+                        if (grid[(8 - lastDiag1[0]) * 8 + lastDiag1[1] - 1].hasChildNodes()) {
+                            if (grid[(8 - lastDiag1[0]) * 8 + lastDiag1[1] - 1].querySelector('.white')) {
+                                let cible = document.createElement('img');
+                                cible.setAttribute('src', 'images/cible1.png');
+                                cible.classList.add('target');
+                                grid[(8 - lastDiag1[0]) * 8 + lastDiag1[1] - 1].appendChild(cible);
+                            }
+                        }
                     }
-                    i = column + 1;
-                    j = row - 1;
-                    lastDiag2 = [column + 1, row - 1];
-                    console.log(i, j, (8 - j) * 8 + i - 1);
-                    while (i <= 8 && j > 0 && !grid[(8 - j) * 8 + i - 1].hasChildNodes()) {
-                        let cible = document.createElement('img');
-                        cible.setAttribute('src', 'images/cible1.png');
-                        cible.classList.add('target');
-                        grid[(8 - j) * 8 + i - 1].appendChild(cible);
-                        i++;
-                        j--;
-                        let a = i;
-                        let b = j;
-                        lastDiag2 = [a, b];
+                    if (firstDiag2.every(val => (val <= 8 && val > 0))) {
+                        if (grid[(8 - firstDiag2[0]) * 8 + firstDiag2[1] - 1].hasChildNodes()) {
+                            if (grid[(8 - firstDiag2[0]) * 8 + firstDiag2[1] - 1].querySelector('.white')) {
+                                let cible = document.createElement('img');
+                                cible.setAttribute('src', 'images/cible1.png');
+                                cible.classList.add('target');
+                                grid[(8 - firstDiag2[0]) * 8 + firstDiag2[1] - 1].appendChild(cible);
+                            }
+                        }
                     }
-                    i = column - 1;
-                    j = row + 1;
-                    firstDiag2 = [column - 1, row + 1];
-                    console.log(i, j, (8 - j) * 8 + i - 1);
-                    while (i > 0 && j <= 8 && !grid[(8 - j) * 8 + i - 1].hasChildNodes()) {
-                        let cible = document.createElement('img');
-                        cible.setAttribute('src', 'images/cible1.png');
-                        cible.classList.add('target');
-                        grid[(8 - j) * 8 + i - 1].appendChild(cible);
-                        i--;
-                        j++;
-                        let a = i;
-                        let b = j;
-                        firstDiag2 = [a, b];
+                    if (lastDiag2.every(val => (val <= 8 && val > 0))) {
+                        if (grid[(8 - lastDiag2[0]) * 8 + lastDiag2[1] - 1].hasChildNodes()) {
+                            if (grid[(8 - lastDiag2[0]) * 8 + lastDiag2[1] - 1].querySelector('.white')) {
+                                let cible = document.createElement('img');
+                                cible.setAttribute('src', 'images/cible1.png');
+                                cible.classList.add('target');
+                                grid[(8 - lastDiag2[0]) * 8 + lastDiag2[1] - 1].appendChild(cible);
+                            }
+                        }
                     }
-                //Captures
-                /*
-                if (firstDiag1[1] > 0 && firstDiag1[0] > 0 && firstDiag1[1] <= 8 && firstDiag1[0] <= 8) {
-                    if (grid[(8 - firstDiag1[1]) * 8 + firstDiag1[0] - 1].querySelector('.white')) {
-                        let cible = document.createElement('img');
-                        cible.setAttribute('src', 'images/cible1.png');
-                        cible.classList.add('target');
-                        grid[(8 - firstDiag1[1]) * 8 + firstDiag1[0] - 1].appendChild(cible);
-                    }
+
                 }
-                if (firstDiag1[1] > 0 && firstDiag1[0] > 0 && firstDiag1[1] <= 8 && firstDiag1[0] <= 8) {
-                    if (grid[(8 - firstDiag2[1]) * 8 + firstDiag2[0] - 1].querySelector('.white')) {
-                        let cible = document.createElement('img');
-                        cible.setAttribute('src', 'images/cible1.png');
-                        cible.classList.add('target');
-                        grid[(8 - firstDiag2[1]) * 8 + firstDiag2[0] - 1].appendChild(cible);
-                    }
-                }
-                if (firstDiag1[1] > 0 && firstDiag1[0] > 0 && firstDiag1[1] <= 8 && firstDiag1[0] <= 8) {
-                    if (grid[(8 - lastDiag1[1]) * 8 + lastDiag1[0] - 1].querySelector('.white')) {
-                        let cible = document.createElement('img');
-                        cible.setAttribute('src', 'images/cible1.png');
-                        cible.classList.add('target');
-                        grid[(8 - lastDiag1[1]) * 8 + lastDiag1[0] - 1].appendChild(cible);
-                    }
-                }
-                if (firstDiag1[1] > 0 && firstDiag1[0] > 0 && firstDiag1[1] <= 8 && firstDiag1[0] <= 8) {
-                    if (grid[(8 - lastDiag2[1]) * 8 + lastDiag2[0] - 1].querySelector('.white')) {
-                        let cible = document.createElement('img');
-                        cible.setAttribute('src', 'images/cible1.png');
-                        cible.classList.add('target');
-                        grid[(8 - lastDiag2[1]) * 8 + lastDiag2[0] - 1].appendChild(cible);
-                    }
-                }*/}
                     break;
                 case 'images/fou2.png': {
                     //Déplacements sauf captures
-                    let i = column + 1;
-                    let j = row + 1;
-                    lastDiag1 = [column + 1, row + 1];
-                    console.log(i, j, (8 - j) * 8 + i - 1);
-                    while (i <= 8 && j <= 8 && !grid[(8 - j) * 8 + i - 1].hasChildNodes()) {
-                        let cible = document.createElement('img');
-                        cible.setAttribute('src', 'images/cible2.png');
-                        cible.classList.add('target');
-                        grid[(8 - j) * 8 + i - 1].appendChild(cible);
-                        i++;
-                        j++;
-                        let a = i;
-                        let b = j;
-                        lastDiag1 = [a, b];
+                    rowIterator = row + 1;
+                    columnIterator = column + 1;
+                    do {
+                        if (rowIterator <= 8 && columnIterator <= 8 && rowIterator > 0 && columnIterator > 0 && !grid[(8 - rowIterator) * 8 + columnIterator - 1].hasChildNodes()) {
+                            let cible = document.createElement('img');
+                            cible.setAttribute('src', 'images/cible2.png');
+                            cible.classList.add('target');
+                            grid[(8 - rowIterator) * 8 + columnIterator - 1].appendChild(cible);
+                            rowIterator++;
+                            columnIterator++;
+                        }
+                        lastDiag1 = [rowIterator, columnIterator];
+                    } while (rowIterator <= 8 && columnIterator <= 8 && !grid[(8 - rowIterator) * 8 + columnIterator - 1].hasChildNodes());
+                    rowIterator = row - 1;
+                    columnIterator = column - 1;
+                    do {
+                        if (rowIterator <= 8 && columnIterator <= 8 && rowIterator > 0 && columnIterator > 0 && !grid[(8 - rowIterator) * 8 + columnIterator - 1].hasChildNodes()) {
+                            let cible = document.createElement('img');
+                            cible.setAttribute('src', 'images/cible2.png');
+                            cible.classList.add('target');
+                            grid[(8 - rowIterator) * 8 + columnIterator - 1].appendChild(cible);
+                            rowIterator--;
+                            columnIterator--;
+                        }
+                        firstDiag1 = [rowIterator, columnIterator];
+
+                    } while (rowIterator > 0 && columnIterator > 0 && !grid[(8 - rowIterator) * 8 + columnIterator - 1].hasChildNodes());
+                    rowIterator = row + 1;
+                    columnIterator = column - 1;
+                    do {
+                        if (rowIterator <= 8 && columnIterator <= 8 && rowIterator > 0 && columnIterator > 0 && !grid[(8 - rowIterator) * 8 + columnIterator - 1].hasChildNodes()) {
+                            let cible = document.createElement('img');
+                            cible.setAttribute('src', 'images/cible2.png');
+                            cible.classList.add('target');
+                            grid[(8 - rowIterator) * 8 + columnIterator - 1].appendChild(cible);
+                            rowIterator++;
+                            columnIterator--;
+                        }
+                        lastDiag2 = [rowIterator, columnIterator];
+
+                    } while (rowIterator <= 8 && columnIterator > 0 && !grid[(8 - rowIterator) * 8 + columnIterator - 1].hasChildNodes());
+                    rowIterator = row - 1;
+                    columnIterator = column + 1;
+                    do {
+                        if (rowIterator <= 8 && columnIterator <= 8 && rowIterator > 0 && columnIterator > 0 && !grid[(8 - rowIterator) * 8 + columnIterator - 1].hasChildNodes()) {
+                            let cible = document.createElement('img');
+                            cible.setAttribute('src', 'images/cible2.png');
+                            cible.classList.add('target');
+                            grid[(8 - rowIterator) * 8 + columnIterator - 1].appendChild(cible);
+                            rowIterator--;
+                            columnIterator++;
+                        }
+                        firstDiag2 = [rowIterator, columnIterator];
+
+                    } while (rowIterator > 0 && columnIterator <= 8 && !grid[(8 - rowIterator) * 8 + columnIterator - 1].hasChildNodes());
+                    //Captures
+
+                    console.log(firstDiag1, lastDiag1, firstDiag2, lastDiag2);
+                    if (firstDiag1.every(val => (val <= 8 && val > 0))) {
+                        if (grid[(8 - firstDiag1[0]) * 8 + firstDiag1[1] - 1].hasChildNodes()) {
+                            if (grid[(8 - firstDiag1[0]) * 8 + firstDiag1[1] - 1].querySelector('.black')) {
+                                let cible = document.createElement('img');
+                                cible.setAttribute('src', 'images/cible2.png');
+                                cible.classList.add('target');
+                                grid[(8 - firstDiag1[0]) * 8 + firstDiag1[1] - 1].appendChild(cible);
+                            }
+                        }
                     }
-                    i = column - 1;
-                    j = row - 1;
-                    firstDiag1 = [column - 1, row - 1];
-                    console.log(i, j, (8 - j) * 8 + i - 1);
-                    while (i > 0 && j > 0 && !grid[(8 - j) * 8 + i - 1].hasChildNodes()) {
-                        let cible = document.createElement('img');
-                        cible.setAttribute('src', 'images/cible2.png');
-                        cible.classList.add('target');
-                        grid[(8 - j) * 8 + i - 1].appendChild(cible);
-                        i--;
-                        j--;
-                        let a = i;
-                        let b = j;
-                        firstDiag1 = [a, b];
+                    if (lastDiag1.every(val => (val <= 8 && val > 0))) {
+                        if (grid[(8 - lastDiag1[0]) * 8 + lastDiag1[1] - 1].hasChildNodes()) {
+                            if (grid[(8 - lastDiag1[0]) * 8 + lastDiag1[1] - 1].querySelector('.black')) {
+                                let cible = document.createElement('img');
+                                cible.setAttribute('src', 'images/cible2.png');
+                                cible.classList.add('target');
+                                grid[(8 - lastDiag1[0]) * 8 + lastDiag1[1] - 1].appendChild(cible);
+                            }
+                        }
                     }
-                    i = column + 1;
-                    j = row - 1;
-                    lastDiag2 = [column + 1, row - 1];
-                    console.log(i, j, (8 - j) * 8 + i - 1);
-                    while (i <= 8 && j > 0 && !grid[(8 - j) * 8 + i - 1].hasChildNodes()) {
-                        let cible = document.createElement('img');
-                        cible.setAttribute('src', 'images/cible2.png');
-                        cible.classList.add('target');
-                        grid[(8 - j) * 8 + i - 1].appendChild(cible);
-                        i++;
-                        j--;
-                        let a = i;
-                        let b = j;
-                        lastDiag2 = [a, b];
+                    if (firstDiag2.every(val => (val <= 8 && val > 0))) {
+                        if (grid[(8 - firstDiag2[0]) * 8 + firstDiag2[1] - 1].hasChildNodes()) {
+                            if (grid[(8 - firstDiag2[0]) * 8 + firstDiag2[1] - 1].querySelector('.black')) {
+                                let cible = document.createElement('img');
+                                cible.setAttribute('src', 'images/cible2.png');
+                                cible.classList.add('target');
+                                grid[(8 - firstDiag2[0]) * 8 + firstDiag2[1] - 1].appendChild(cible);
+                            }
+                        }
                     }
-                    i = column - 1;
-                    j = row + 1;
-                    firstDiag2 = [column - 1, row + 1];
-                    console.log(i, j, (8 - j) * 8 + i - 1);
-                    while (i > 0 && j <= 8 && !grid[(8 - j) * 8 + i - 1].hasChildNodes()) {
-                        let cible = document.createElement('img');
-                        cible.setAttribute('src', 'images/cible2.png');
-                        cible.classList.add('target');
-                        grid[(8 - j) * 8 + i - 1].appendChild(cible);
-                        i--;
-                        j++;
-                        let a = i;
-                        let b = j;
-                        firstDiag2 = [a, b];
+                    if (lastDiag2.every(val => (val <= 8 && val > 0))) {
+                        if (grid[(8 - lastDiag2[0]) * 8 + lastDiag2[1] - 1].hasChildNodes()) {
+                            if (grid[(8 - lastDiag2[0]) * 8 + lastDiag2[1] - 1].querySelector('.black')) {
+                                let cible = document.createElement('img');
+                                cible.setAttribute('src', 'images/cible2.png');
+                                cible.classList.add('target');
+                                grid[(8 - lastDiag2[0]) * 8 + lastDiag2[1] - 1].appendChild(cible);
+                            }
+                        }
                     }
-                    break;
+
                 }
+                    break;
                 case 'images/cavalier1.png':
                     break;
                 case 'images/cavalier2.png':
@@ -528,8 +573,338 @@ document.addEventListener('DOMContentLoaded', () => {
                 case 'images/roi2.png':
                     break;
                 case 'images/dame1.png':
+                    //Déplacements sauf captures
+                    console.log(lastColumn, lastRow, firstColumn, firstRow);
+                    for (let i = column + 1; i <= 8 && !grid[(8 - row) * 8 + i - 1].hasChildNodes(); i++) {
+                        let cible = document.createElement('img');
+                        cible.setAttribute('src', 'images/cible1.png');
+                        cible.classList.add('target');
+                        grid[(8 - row) * 8 + i - 1].appendChild(cible);
+                        lastColumn = i + 1;
+                    }
+                    for (let i = column - 1; i > 0 && !grid[(8 - row) * 8 + i - 1].hasChildNodes(); i--) {
+                        let cible = document.createElement('img');
+                        cible.setAttribute('src', 'images/cible1.png');
+                        cible.classList.add('target');
+                        grid[(8 - row) * 8 + i - 1].appendChild(cible);
+                        firstColumn = i - 1;
+                    }
+                    for (let i = row + 1; i <= 8 && !grid[(8 - i) * 8 + column - 1].hasChildNodes(); i++) {
+                        let cible = document.createElement('img');
+                        cible.setAttribute('src', 'images/cible1.png');
+                        cible.classList.add('target');
+                        grid[(8 - i) * 8 + column - 1].appendChild(cible);
+                        lastRow = i + 1;
+                    }
+                    for (let i = row - 1; i > 0 && !grid[(8 - i) * 8 + column - 1].hasChildNodes(); i--) {
+                        let cible = document.createElement('img');
+                        cible.setAttribute('src', 'images/cible1.png');
+                        cible.classList.add('target');
+                        grid[(8 - i) * 8 + column - 1].appendChild(cible);
+                        firstRow = i - 1;
+                    }
+                    //Captures
+                    if (firstColumn >= 1) {
+                        if (grid[(8 - row) * 8 + (firstColumn) - 1].querySelector('.white')) {
+                            let cible = document.createElement('img');
+                            cible.setAttribute('src', 'images/cible1.png');
+                            cible.classList.add('target');
+                            grid[(8 - row) * 8 + (firstColumn) - 1].appendChild(cible);
+                        }
+                    }
+                    if (lastColumn <= 8 && lastColumn !== 0) {
+                        if (grid[(8 - row) * 8 + (lastColumn) - 1].querySelector('.white')) {
+                            let cible = document.createElement('img');
+                            cible.setAttribute('src', 'images/cible1.png');
+                            cible.classList.add('target');
+                            grid[(8 - row) * 8 + (lastColumn) - 1].appendChild(cible);
+                        }
+                    }
+                    if (firstRow >= 1) {
+                        if (grid[(8 - firstRow) * 8 + (column) - 1].querySelector('.white')) {
+                            let cible = document.createElement('img');
+                            cible.setAttribute('src', 'images/cible1.png');
+                            cible.classList.add('target');
+                            grid[(8 - firstRow) * 8 + (column) - 1].appendChild(cible);
+                        }
+                    }
+                    if (lastRow <= 8 && lastRow !== 0) {
+                        if (grid[(8 - lastRow) * 8 + (column) - 1].querySelector('.white')) {
+                            let cible = document.createElement('img');
+                            cible.setAttribute('src', 'images/cible1.png');
+                            cible.classList.add('target');
+                            grid[(8 - lastRow) * 8 + (column) - 1].appendChild(cible);
+                        }
+                    } {
+                        //Déplacements sauf captures
+                        rowIterator = row + 1;
+                        columnIterator = column + 1;
+                        do {
+                            if (rowIterator <= 8 && columnIterator <= 8 && rowIterator > 0 && columnIterator > 0 && !grid[(8 - rowIterator) * 8 + columnIterator - 1].hasChildNodes()) {
+                                let cible = document.createElement('img');
+                                cible.setAttribute('src', 'images/cible1.png');
+                                cible.classList.add('target');
+                                grid[(8 - rowIterator) * 8 + columnIterator - 1].appendChild(cible);
+                                rowIterator++;
+                                columnIterator++;
+                            }
+                            lastDiag1 = [rowIterator, columnIterator];
+                        } while (rowIterator <= 8 && columnIterator <= 8 && !grid[(8 - rowIterator) * 8 + columnIterator - 1].hasChildNodes());
+                        rowIterator = row - 1;
+                        columnIterator = column - 1;
+                        do {
+                            if (rowIterator <= 8 && columnIterator <= 8 && rowIterator > 0 && columnIterator > 0 && !grid[(8 - rowIterator) * 8 + columnIterator - 1].hasChildNodes()) {
+                                let cible = document.createElement('img');
+                                cible.setAttribute('src', 'images/cible1.png');
+                                cible.classList.add('target');
+                                grid[(8 - rowIterator) * 8 + columnIterator - 1].appendChild(cible);
+                                rowIterator--;
+                                columnIterator--;
+                            }
+                            firstDiag1 = [rowIterator, columnIterator];
+
+                        } while (rowIterator > 0 && columnIterator > 0 && !grid[(8 - rowIterator) * 8 + columnIterator - 1].hasChildNodes());
+                        rowIterator = row + 1;
+                        columnIterator = column - 1;
+                        do {
+                            if (rowIterator <= 8 && columnIterator <= 8 && rowIterator > 0 && columnIterator > 0 && !grid[(8 - rowIterator) * 8 + columnIterator - 1].hasChildNodes()) {
+                                let cible = document.createElement('img');
+                                cible.setAttribute('src', 'images/cible1.png');
+                                cible.classList.add('target');
+                                grid[(8 - rowIterator) * 8 + columnIterator - 1].appendChild(cible);
+                                rowIterator++;
+                                columnIterator--;
+                            }
+                            lastDiag2 = [rowIterator, columnIterator];
+
+                        } while (rowIterator <= 8 && columnIterator > 0 && !grid[(8 - rowIterator) * 8 + columnIterator - 1].hasChildNodes());
+                        rowIterator = row - 1;
+                        columnIterator = column + 1;
+                        do {
+                            if (rowIterator <= 8 && columnIterator <= 8 && rowIterator > 0 && columnIterator > 0 && !grid[(8 - rowIterator) * 8 + columnIterator - 1].hasChildNodes()) {
+                                let cible = document.createElement('img');
+                                cible.setAttribute('src', 'images/cible1.png');
+                                cible.classList.add('target');
+                                grid[(8 - rowIterator) * 8 + columnIterator - 1].appendChild(cible);
+                                rowIterator--;
+                                columnIterator++;
+                            }
+                            firstDiag2 = [rowIterator, columnIterator];
+
+                        } while (rowIterator > 0 && columnIterator <= 8 && !grid[(8 - rowIterator) * 8 + columnIterator - 1].hasChildNodes());
+                        //Captures
+
+                        console.log(firstDiag1, lastDiag1, firstDiag2, lastDiag2);
+                        if (firstDiag1.every(val => (val <= 8 && val > 0))) {
+                            if (grid[(8 - firstDiag1[0]) * 8 + firstDiag1[1] - 1].hasChildNodes()) {
+                                if (grid[(8 - firstDiag1[0]) * 8 + firstDiag1[1] - 1].querySelector('.white')) {
+                                    let cible = document.createElement('img');
+                                    cible.setAttribute('src', 'images/cible1.png');
+                                    cible.classList.add('target');
+                                    grid[(8 - firstDiag1[0]) * 8 + firstDiag1[1] - 1].appendChild(cible);
+                                }
+                            }
+                        }
+                        if (lastDiag1.every(val => (val <= 8 && val > 0))) {
+                            if (grid[(8 - lastDiag1[0]) * 8 + lastDiag1[1] - 1].hasChildNodes()) {
+                                if (grid[(8 - lastDiag1[0]) * 8 + lastDiag1[1] - 1].querySelector('.white')) {
+                                    let cible = document.createElement('img');
+                                    cible.setAttribute('src', 'images/cible1.png');
+                                    cible.classList.add('target');
+                                    grid[(8 - lastDiag1[0]) * 8 + lastDiag1[1] - 1].appendChild(cible);
+                                }
+                            }
+                        }
+                        if (firstDiag2.every(val => (val <= 8 && val > 0))) {
+                            if (grid[(8 - firstDiag2[0]) * 8 + firstDiag2[1] - 1].hasChildNodes()) {
+                                if (grid[(8 - firstDiag2[0]) * 8 + firstDiag2[1] - 1].querySelector('.white')) {
+                                    let cible = document.createElement('img');
+                                    cible.setAttribute('src', 'images/cible1.png');
+                                    cible.classList.add('target');
+                                    grid[(8 - firstDiag2[0]) * 8 + firstDiag2[1] - 1].appendChild(cible);
+                                }
+                            }
+                        }
+                        if (lastDiag2.every(val => (val <= 8 && val > 0))) {
+                            if (grid[(8 - lastDiag2[0]) * 8 + lastDiag2[1] - 1].hasChildNodes()) {
+                                if (grid[(8 - lastDiag2[0]) * 8 + lastDiag2[1] - 1].querySelector('.white')) {
+                                    let cible = document.createElement('img');
+                                    cible.setAttribute('src', 'images/cible1.png');
+                                    cible.classList.add('target');
+                                    grid[(8 - lastDiag2[0]) * 8 + lastDiag2[1] - 1].appendChild(cible);
+                                }
+                            }
+                        }
+
+                    }
                     break;
                 case 'images/dame2.png':
+
+                    //Déplacements sauf captures
+                    console.log(lastColumn, lastRow, firstColumn, firstRow);
+                    for (let i = column + 1; i <= 8 && !grid[(8 - row) * 8 + i - 1].hasChildNodes(); i++) {
+                        let cible = document.createElement('img');
+                        cible.setAttribute('src', 'images/cible2.png');
+                        cible.classList.add('target');
+                        grid[(8 - row) * 8 + i - 1].appendChild(cible);
+                        lastColumn = i + 1;
+                    }
+                    for (let i = column - 1; i > 0 && !grid[(8 - row) * 8 + i - 1].hasChildNodes(); i--) {
+                        let cible = document.createElement('img');
+                        cible.setAttribute('src', 'images/cible2.png');
+                        cible.classList.add('target');
+                        grid[(8 - row) * 8 + i - 1].appendChild(cible);
+                        firstColumn = i - 1;
+                    }
+                    for (let i = row + 1; i <= 8 && !grid[(8 - i) * 8 + column - 1].hasChildNodes(); i++) {
+                        let cible = document.createElement('img');
+                        cible.setAttribute('src', 'images/cible2.png');
+                        cible.classList.add('target');
+                        grid[(8 - i) * 8 + column - 1].appendChild(cible);
+                        lastRow = i + 1;
+                    }
+                    for (let i = row - 1; i > 0 && !grid[(8 - i) * 8 + column - 1].hasChildNodes(); i--) {
+                        let cible = document.createElement('img');
+                        cible.setAttribute('src', 'images/cible2.png');
+                        cible.classList.add('target');
+                        grid[(8 - i) * 8 + column - 1].appendChild(cible);
+                        firstRow = i - 1;
+                    }
+                    //Captures
+                    if (firstColumn >= 1) {
+                        if (grid[(8 - row) * 8 + (firstColumn) - 1].querySelector('.black')) {
+                            let cible = document.createElement('img');
+                            cible.setAttribute('src', 'images/cible2.png');
+                            cible.classList.add('target');
+                            grid[(8 - row) * 8 + (firstColumn) - 1].appendChild(cible);
+                        }
+                    }
+                    if (lastColumn <= 8 && lastColumn !== 0) {
+                        if (grid[(8 - row) * 8 + (lastColumn) - 1].querySelector('.black')) {
+                            let cible = document.createElement('img');
+                            cible.setAttribute('src', 'images/cible2.png');
+                            cible.classList.add('target');
+                            grid[(8 - row) * 8 + (lastColumn) - 1].appendChild(cible);
+                        }
+                    }
+                    if (firstRow >= 1) {
+                        if (grid[(8 - firstRow) * 8 + (column) - 1].querySelector('.black')) {
+                            let cible = document.createElement('img');
+                            cible.setAttribute('src', 'images/cible2.png');
+                            cible.classList.add('target');
+                            grid[(8 - firstRow) * 8 + (column) - 1].appendChild(cible);
+                        }
+                    }
+                    if (lastRow <= 8 && lastRow !== 0) {
+                        if (grid[(8 - lastRow) * 8 + (column) - 1].querySelector('.black')) {
+                            let cible = document.createElement('img');
+                            cible.setAttribute('src', 'images/cible2.png');
+                            cible.classList.add('target');
+                            grid[(8 - lastRow) * 8 + (column) - 1].appendChild(cible);
+                        }
+                    }
+
+                    //Déplacements sauf captures
+                    rowIterator = row + 1;
+                    columnIterator = column + 1;
+                    do {
+                        if (rowIterator <= 8 && columnIterator <= 8 && rowIterator > 0 && columnIterator > 0 && !grid[(8 - rowIterator) * 8 + columnIterator - 1].hasChildNodes()) {
+                            let cible = document.createElement('img');
+                            cible.setAttribute('src', 'images/cible2.png');
+                            cible.classList.add('target');
+                            grid[(8 - rowIterator) * 8 + columnIterator - 1].appendChild(cible);
+                            rowIterator++;
+                            columnIterator++;
+                        }
+                        lastDiag1 = [rowIterator, columnIterator];
+                    } while (rowIterator <= 8 && columnIterator <= 8 && !grid[(8 - rowIterator) * 8 + columnIterator - 1].hasChildNodes());
+                    rowIterator = row - 1;
+                    columnIterator = column - 1;
+                    do {
+                        if (rowIterator <= 8 && columnIterator <= 8 && rowIterator > 0 && columnIterator > 0 && !grid[(8 - rowIterator) * 8 + columnIterator - 1].hasChildNodes()) {
+                            let cible = document.createElement('img');
+                            cible.setAttribute('src', 'images/cible2.png');
+                            cible.classList.add('target');
+                            grid[(8 - rowIterator) * 8 + columnIterator - 1].appendChild(cible);
+                            rowIterator--;
+                            columnIterator--;
+                        }
+                        firstDiag1 = [rowIterator, columnIterator];
+
+                    } while (rowIterator > 0 && columnIterator > 0 && !grid[(8 - rowIterator) * 8 + columnIterator - 1].hasChildNodes());
+                    rowIterator = row + 1;
+                    columnIterator = column - 1;
+                    do {
+                        if (rowIterator <= 8 && columnIterator <= 8 && rowIterator > 0 && columnIterator > 0 && !grid[(8 - rowIterator) * 8 + columnIterator - 1].hasChildNodes()) {
+                            let cible = document.createElement('img');
+                            cible.setAttribute('src', 'images/cible2.png');
+                            cible.classList.add('target');
+                            grid[(8 - rowIterator) * 8 + columnIterator - 1].appendChild(cible);
+                            rowIterator++;
+                            columnIterator--;
+                        }
+                        lastDiag2 = [rowIterator, columnIterator];
+
+                    } while (rowIterator <= 8 && columnIterator > 0 && !grid[(8 - rowIterator) * 8 + columnIterator - 1].hasChildNodes());
+                    rowIterator = row - 1;
+                    columnIterator = column + 1;
+                    do {
+                        if (rowIterator <= 8 && columnIterator <= 8 && rowIterator > 0 && columnIterator > 0 && !grid[(8 - rowIterator) * 8 + columnIterator - 1].hasChildNodes()) {
+                            let cible = document.createElement('img');
+                            cible.setAttribute('src', 'images/cible2.png');
+                            cible.classList.add('target');
+                            grid[(8 - rowIterator) * 8 + columnIterator - 1].appendChild(cible);
+                            rowIterator--;
+                            columnIterator++;
+                        }
+                        firstDiag2 = [rowIterator, columnIterator];
+
+                    } while (rowIterator > 0 && columnIterator <= 8 && !grid[(8 - rowIterator) * 8 + columnIterator - 1].hasChildNodes());
+                    //Captures
+
+                    console.log(firstDiag1, lastDiag1, firstDiag2, lastDiag2);
+                    if (firstDiag1.every(val => (val <= 8 && val > 0))) {
+                        if (grid[(8 - firstDiag1[0]) * 8 + firstDiag1[1] - 1].hasChildNodes()) {
+                            if (grid[(8 - firstDiag1[0]) * 8 + firstDiag1[1] - 1].querySelector('.black')) {
+                                let cible = document.createElement('img');
+                                cible.setAttribute('src', 'images/cible2.png');
+                                cible.classList.add('target');
+                                grid[(8 - firstDiag1[0]) * 8 + firstDiag1[1] - 1].appendChild(cible);
+                            }
+                        }
+                    }
+                    if (lastDiag1.every(val => (val <= 8 && val > 0))) {
+                        if (grid[(8 - lastDiag1[0]) * 8 + lastDiag1[1] - 1].hasChildNodes()) {
+                            if (grid[(8 - lastDiag1[0]) * 8 + lastDiag1[1] - 1].querySelector('.black')) {
+                                let cible = document.createElement('img');
+                                cible.setAttribute('src', 'images/cible2.png');
+                                cible.classList.add('target');
+                                grid[(8 - lastDiag1[0]) * 8 + lastDiag1[1] - 1].appendChild(cible);
+                            }
+                        }
+                    }
+                    if (firstDiag2.every(val => (val <= 8 && val > 0))) {
+                        if (grid[(8 - firstDiag2[0]) * 8 + firstDiag2[1] - 1].hasChildNodes()) {
+                            if (grid[(8 - firstDiag2[0]) * 8 + firstDiag2[1] - 1].querySelector('.black')) {
+                                let cible = document.createElement('img');
+                                cible.setAttribute('src', 'images/cible2.png');
+                                cible.classList.add('target');
+                                grid[(8 - firstDiag2[0]) * 8 + firstDiag2[1] - 1].appendChild(cible);
+                            }
+                        }
+                    }
+                    if (lastDiag2.every(val => (val <= 8 && val > 0))) {
+                        if (grid[(8 - lastDiag2[0]) * 8 + lastDiag2[1] - 1].hasChildNodes()) {
+                            if (grid[(8 - lastDiag2[0]) * 8 + lastDiag2[1] - 1].querySelector('.black')) {
+                                let cible = document.createElement('img');
+                                cible.setAttribute('src', 'images/cible2.png');
+                                cible.classList.add('target');
+                                grid[(8 - lastDiag2[0]) * 8 + lastDiag2[1] - 1].appendChild(cible);
+                            }
+                        }
+                    }
+
+
                     break;
             }
             clickedPiece = e;
