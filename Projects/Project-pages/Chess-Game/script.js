@@ -295,65 +295,66 @@ document.addEventListener('DOMContentLoaded', () => {
                     break;
                 case 'images/tour2.png':
                     //Déplacements sauf captures
-                    for (let i = column + 1; i < 8 && !grid[(8 - row) * 8 + i - 1].hasChildNodes(); i++) {
+                    console.log(lastColumn, lastRow, firstColumn, firstRow);
+                    for (let i = column + 1; i <= 8 && !grid[(8 - row) * 8 + i - 1].hasChildNodes(); i++) {
                         let cible = document.createElement('img');
                         cible.setAttribute('src', 'images/cible2.png');
                         cible.classList.add('target');
                         grid[(8 - row) * 8 + i - 1].appendChild(cible);
-                        lastColumn = i;
+                        lastColumn = i + 1;
                     }
                     for (let i = column - 1; i > 0 && !grid[(8 - row) * 8 + i - 1].hasChildNodes(); i--) {
                         let cible = document.createElement('img');
                         cible.setAttribute('src', 'images/cible2.png');
                         cible.classList.add('target');
                         grid[(8 - row) * 8 + i - 1].appendChild(cible);
-                        firstColumn = i;
+                        firstColumn = i - 1;
                     }
-                    for (let i = row + 1; i < 8 && !grid[(8 - i) * 8 + column - 1].hasChildNodes(); i++) {
+                    for (let i = row + 1; i <= 8 && !grid[(8 - i) * 8 + column - 1].hasChildNodes(); i++) {
                         let cible = document.createElement('img');
                         cible.setAttribute('src', 'images/cible2.png');
                         cible.classList.add('target');
                         grid[(8 - i) * 8 + column - 1].appendChild(cible);
-                        lastRow = i;
+                        lastRow = i + 1;
                     }
                     for (let i = row - 1; i > 0 && !grid[(8 - i) * 8 + column - 1].hasChildNodes(); i--) {
                         let cible = document.createElement('img');
                         cible.setAttribute('src', 'images/cible2.png');
                         cible.classList.add('target');
                         grid[(8 - i) * 8 + column - 1].appendChild(cible);
-                        firstRow = i;
+                        firstRow = i - 1;
                     }
                     //Captures
-                    if (firstColumn > 1 && firstColumn !== 0) {
-                        if (grid[(8 - row) * 8 + (firstColumn - 1) - 1].querySelector('.black')) {
+                    if (firstColumn >= 1) {
+                        if (grid[(8 - row) * 8 + (firstColumn) - 1].querySelector('.black')) {
                             let cible = document.createElement('img');
                             cible.setAttribute('src', 'images/cible2.png');
                             cible.classList.add('target');
-                            grid[(8 - row) * 8 + (firstColumn - 1) - 1].appendChild(cible);
+                            grid[(8 - row) * 8 + (firstColumn) - 1].appendChild(cible);
                         }
                     }
-                    if (lastColumn < 8 && lastColumn !== 0) {
-                        if (grid[(8 - row) * 8 + (lastColumn + 1) - 1].querySelector('.black')) {
+                    if (lastColumn <= 8 && lastColumn !== 0) {
+                        if (grid[(8 - row) * 8 + (lastColumn) - 1].querySelector('.black')) {
                             let cible = document.createElement('img');
                             cible.setAttribute('src', 'images/cible2.png');
                             cible.classList.add('target');
-                            grid[(8 - row) * 8 + (lastColumn + 1) - 1].appendChild(cible);
+                            grid[(8 - row) * 8 + (lastColumn) - 1].appendChild(cible);
                         }
                     }
-                    if (firstRow > 1 && firstRow !== 0) {
-                        if (grid[(8 - firstRow + 1) * 8 + (column) - 1].querySelector('.black')) {
+                    if (firstRow >= 1) {
+                        if (grid[(8 - firstRow) * 8 + (column) - 1].querySelector('.black')) {
                             let cible = document.createElement('img');
                             cible.setAttribute('src', 'images/cible2.png');
                             cible.classList.add('target');
-                            grid[(8 - firstRow + 1) * 8 + (column) - 1].appendChild(cible);
+                            grid[(8 - firstRow) * 8 + (column) - 1].appendChild(cible);
                         }
                     }
-                    if (lastRow < 8 && lastRow !== 0) {
-                        if (grid[(8 - lastRow - 1) * 8 + (column) - 1].querySelector('.black')) {
+                    if (lastRow <= 8 && lastRow !== 0) {
+                        if (grid[(8 - lastRow) * 8 + (column) - 1].querySelector('.black')) {
                             let cible = document.createElement('img');
                             cible.setAttribute('src', 'images/cible2.png');
                             cible.classList.add('target');
-                            grid[(8 - lastRow - 1) * 8 + (column) - 1].appendChild(cible);
+                            grid[(8 - lastRow) * 8 + (column) - 1].appendChild(cible);
                         }
                     }
                     break;
