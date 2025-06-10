@@ -1,4 +1,24 @@
 document.addEventListener('DOMContentLoaded', () => {
+    //Defining game object and switching turns
+
+    let game = {};
+    Object.defineProperty(game, 'turn', {
+        set(value) {
+            this._turn = value;
+            if (value === 'black') {
+                console.log("Black's turn!");
+                playMoveBlack();
+            }
+            else if (value === 'white') {
+                console.log("White's turn!");
+                playMoveWhite();
+            }
+        },
+        get() {
+            return this._turn;
+        }
+    });
+
     //Defining the chess board
     let board = document.querySelector('.board');
     let clickedPiece = 0;
@@ -1240,52 +1260,71 @@ document.addEventListener('DOMContentLoaded', () => {
                     break;
             }
             clickedPiece = e;
+            for (let i = 0; i < grid.length; i++) {
+                if (grid[i].querySelector('[src="images/cible1.png"]')) {
+                    grid[i].querySelector('[src="images/cible1.png"]').addEventListener('click', (e) => move(e, clickedPiece));
+                }
+                else if (grid[i].querySelector('[src="images/cible2.png"]')) {
+                    grid[i].querySelector('[src="images/cible2.png"]').addEventListener('click', (e) => move(e, clickedPiece));
+
+                }
+            }
+
         }
     }
-
     function move(e, olde) {
-        if (e.target.nodeName === "IMG" && (e.target.getAttribute('src') == "images/cible1.png" || e.target.getAttribute('src') == "images/cible2.png") && clickedPiece !== 0) {
-            console.log(clickedPiece);
-            let copy = olde.target.cloneNode(false);
+        const isTargetImage = e.target.nodeName === "IMG";
+        const isMoveTarget = ["images/cible1.png", "images/cible2.png"].includes(e.target.getAttribute('src'));
+
+        if (isTargetImage && isMoveTarget && clickedPiece !== 0) {
+            const movedPiece = olde.target.cloneNode(false);
             olde.target.remove();
-            let eparent = e.target.parentNode;
-            eparent.innerHTML = "";
-            eparent.appendChild(copy);
+
+            const destination = e.target.parentNode;
+            destination.innerHTML = "";
+            destination.appendChild(movedPiece);
+
             clickedPiece = 0;
             console.log(clickedPiece);
-
+            if (game.turn === 'white') {
+                game.turn = 'black';
+            }
+            else if (game.turn === 'black') {
+                game.turn = 'white';
+            }
         }
-        let shownMoves = document.querySelectorAll('.target');
-        for (let i = 0; i < shownMoves.length; i++) {
-            shownMoves[i].remove();
+
+        // Remove all move indicators
+        document.querySelectorAll('.target').forEach(target => target.remove());
+    }
+    function playMoveWhite() {
+        for (let i = 0; i < grid.length; i++) {
+            if (grid[i].querySelector('.white')) {
+                grid[i].querySelector('.white').addEventListener('click', showAllMoves);
+            }
+            else if (grid[i].querySelector('.black')) {
+                grid[i].querySelector('.black').removeEventListener('click', showAllMoves);
+            }
+        }
+
+    }
+    function playMoveBlack() {
+        for (let i = 0; i < grid.length; i++) {
+            if (grid[i].querySelector('.black')) {
+                grid[i].querySelector('.black').addEventListener('click', showAllMoves);
+            }
+            else if (grid[i].querySelector('.white')) {
+                grid[i].querySelector('.white').removeEventListener('click', showAllMoves);
+            }
         }
     }
 
-
-    /*Spawn elements on empty tiles by clicking*/
-    function spawnItem(e) {
-        if (!e.target.hasChildNodes()) {
-            let img = document.createElement('img');
-            img.classList.add('white');
-            img.classList.add('black');
-            e.target.appendChild(img);
-        }
-
-    }
-    /*Delete elements by double clicking*/
-    /*
-    function deleteItem(e) {
-        if (e.target.nodeName === "IMG") {
-            e.target.remove();
-        }
-    }*/
     createGrid();
     const grid = document.querySelectorAll('.board div');
+
     resetGrid();
-    for (let i = 0; i < grid.length; i++) {
-        grid[i].addEventListener('click', (e) => { move(e, clickedPiece) })
-        grid[i].addEventListener('click', showAllMoves);
-        //grid[i].addEventListener('click', spawnItem);
-        //grid[i].addEventListener('dblclick', deleteItem);
-    }
+    game.turn = 'white';
+
 })
+
+//file:///home/thomas/repos/My-website/Projects/Project-pages/Chess-Game/chess.html
