@@ -20,8 +20,19 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     //Defining the chess board
+
     let board = document.querySelector('.board');
     let clickedPiece = 0;
+
+    //Defining the reset button
+
+    resetButton = document.querySelector('#reset');
+    resetButton.addEventListener('click', resetGrid);
+
+
+
+    //Defining functions
+
     function createGrid() {
         for (let i = 0; i < 8; i++) {
             for (let j = 0; j < 8; j++) {
@@ -40,6 +51,7 @@ document.addEventListener('DOMContentLoaded', () => {
     function resetGrid() {
         for (let i = 0; i < 8; i++) {
             for (let j = 0; j < 8; j++) {
+                grid[(8 * i) + j].innerHTML = "";
                 let img = document.createElement('img');
                 if (i === 1) {
                     img.setAttribute('src', 'images/pion1.png');
@@ -141,6 +153,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
             }
         }
+        game.turn = 'white';
     }
     function showAllMoves(e) {
         if (e.target.nodeName === "IMG") {
@@ -1278,6 +1291,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
         if (isTargetImage && isMoveTarget && clickedPiece !== 0) {
             const movedPiece = olde.target.cloneNode(false);
+            const oldPosition = olde.target.parentNode;
+            const destinationWithContent = e.target.parentNode.cloneNode(false);
             olde.target.remove();
 
             const destination = e.target.parentNode;
@@ -1286,16 +1301,936 @@ document.addEventListener('DOMContentLoaded', () => {
 
             clickedPiece = 0;
             console.log(clickedPiece);
-            if (game.turn === 'white') {
-                game.turn = 'black';
+            if (checkMove(e)) {
+                if (game.turn === 'white') {
+                    game.turn = 'black';
+                }
+                else if (game.turn === 'black') {
+                    game.turn = 'white';
+                }
             }
-            else if (game.turn === 'black') {
-                game.turn = 'white';
+            else {
+                console.log('hi', destinationWithContent);
+                oldPosition.appendChild(movedPiece);
+                destination.innerHTML = "";
+                destination.parentNode.replaceChild(destinationWithContent, destination);
+                game.turn = game.turn;
             }
+            console.log(checkMove(e));
+
         }
 
         // Remove all move indicators
         document.querySelectorAll('.target').forEach(target => target.remove());
+    }
+    function checkMove(e) {
+        console.log('Checking if the move is legal');
+        let whitePieces = document.querySelectorAll('.white');
+        let blackPieces = document.querySelectorAll('.black');
+        if (game.turn === 'white') {
+            for (let i = 0; i < blackPieces.length; i++) {
+                let currentPiece = blackPieces[i];
+                let currentPosition = currentPiece.parentElement.getAttribute('data-id');
+                let column = parseInt(currentPosition[0]);
+                let row = parseInt(currentPosition[2]);
+                let firstColumn = column - 1;
+                let lastColumn = column + 1;
+                let firstRow = row - 1;
+                let lastRow = row + 1;
+                let firstDiag1 = [];
+                let firstDiag2 = [];
+                let lastDiag1 = [];
+                let lastDiag2 = [];
+                switch (currentPiece.getAttribute('src')) {
+                    case 'images/pion1.png':
+                        if (column < 8) {
+                            if (grid[(8 - (row - 1)) * 8 + (column + 1) - 1].querySelector('.white')) {
+                                if (grid[(8 - (row - 1)) * 8 + (column + 1) - 1].querySelector('.white').getAttribute('src') === "images/roi2.png") {
+                                    return false;
+                                }
+                            }
+                        }
+                        if (column > 1) {
+                            if (grid[(8 - (row - 1)) * 8 + (column - 1) - 1].querySelector('.white')) {
+                                if (grid[(8 - (row - 1)) * 8 + (column - 1) - 1].querySelector('.white').getAttribute('src') === "images/roi2.png") {
+                                    return false;
+                                }
+                            }
+                        }
+                        break;
+                    case 'images/tour1.png':
+                        // Parcours des cases sur la même ligne / colonne
+                        console.log(lastColumn, lastRow, firstColumn, firstRow);
+                        for (let i = column + 1; i <= 8 && !grid[(8 - row) * 8 + i - 1].hasChildNodes(); i++) {
+                            lastColumn = i + 1;
+                        }
+                        for (let i = column - 1; i > 0 && !grid[(8 - row) * 8 + i - 1].hasChildNodes(); i--) {
+                            firstColumn = i - 1;
+                        }
+                        for (let i = row + 1; i <= 8 && !grid[(8 - i) * 8 + column - 1].hasChildNodes(); i++) {
+                            lastRow = i + 1;
+                        }
+                        for (let i = row - 1; i > 0 && !grid[(8 - i) * 8 + column - 1].hasChildNodes(); i--) {
+                            firstRow = i - 1;
+                        }
+                        // Identification des captures possibles et vérification si l'une d'elle est le roi
+                        if (firstColumn >= 1) {
+                            if (grid[(8 - row) * 8 + (firstColumn) - 1].querySelector('.white')) {
+                                if (grid[(8 - row) * 8 + (firstColumn) - 1].querySelector('.white').getAttribute('src') === "images/roi2.png") {
+                                    return false;
+                                }
+                            }
+                        }
+                        if (lastColumn <= 8 && lastColumn !== 0) {
+                            if (grid[(8 - row) * 8 + (lastColumn) - 1].querySelector('.white')) {
+                                if (grid[(8 - row) * 8 + (lastColumn) - 1].querySelector('.white').getAttribute('src') === "images/roi2.png") {
+                                    return false;
+                                }
+                            }
+                        }
+                        if (firstRow >= 1) {
+                            if (grid[(8 - firstRow) * 8 + (column) - 1].querySelector('.white')) {
+                                if (grid[(8 - firstRow) * 8 + (column) - 1].querySelector('.white').getAttribute('src') === "images/roi2.png") {
+                                    return false;
+                                }
+                            }
+                        }
+                        if (lastRow <= 8 && lastRow !== 0) {
+                            if (grid[(8 - lastRow) * 8 + (column) - 1].querySelector('.white')) {
+                                if (grid[(8 - lastRow) * 8 + (column) - 1].querySelector('.white').getAttribute('src') === "images/roi2.png") {
+                                    return false;
+                                }
+                            }
+                        }
+                        break;
+                    case 'images/fou1.png': {
+                        // Parcours des cases sur la même diagonale
+                        rowIterator = row + 1;
+                        columnIterator = column + 1;
+                        do {
+                            if (rowIterator <= 8 && columnIterator <= 8 && rowIterator > 0 && columnIterator > 0 && !grid[(8 - rowIterator) * 8 + columnIterator - 1].hasChildNodes()) {
+                                rowIterator++;
+                                columnIterator++;
+                            }
+                            lastDiag1 = [rowIterator, columnIterator];
+                        } while (rowIterator <= 8 && columnIterator <= 8 && !grid[(8 - rowIterator) * 8 + columnIterator - 1].hasChildNodes());
+                        rowIterator = row - 1;
+                        columnIterator = column - 1;
+                        do {
+                            if (rowIterator <= 8 && columnIterator <= 8 && rowIterator > 0 && columnIterator > 0 && !grid[(8 - rowIterator) * 8 + columnIterator - 1].hasChildNodes()) {
+                                rowIterator--;
+                                columnIterator--;
+                            }
+                            firstDiag1 = [rowIterator, columnIterator];
+
+                        } while (rowIterator > 0 && columnIterator > 0 && !grid[(8 - rowIterator) * 8 + columnIterator - 1].hasChildNodes());
+                        rowIterator = row + 1;
+                        columnIterator = column - 1;
+                        do {
+                            if (rowIterator <= 8 && columnIterator <= 8 && rowIterator > 0 && columnIterator > 0 && !grid[(8 - rowIterator) * 8 + columnIterator - 1].hasChildNodes()) {
+                                rowIterator++;
+                                columnIterator--;
+                            }
+                            lastDiag2 = [rowIterator, columnIterator];
+
+                        } while (rowIterator <= 8 && columnIterator > 0 && !grid[(8 - rowIterator) * 8 + columnIterator - 1].hasChildNodes());
+                        rowIterator = row - 1;
+                        columnIterator = column + 1;
+                        do {
+                            if (rowIterator <= 8 && columnIterator <= 8 && rowIterator > 0 && columnIterator > 0 && !grid[(8 - rowIterator) * 8 + columnIterator - 1].hasChildNodes()) {
+                                rowIterator--;
+                                columnIterator++;
+                            }
+                            firstDiag2 = [rowIterator, columnIterator];
+
+                        } while (rowIterator > 0 && columnIterator <= 8 && !grid[(8 - rowIterator) * 8 + columnIterator - 1].hasChildNodes());
+                        // Identification des captures possibles et vérification si l'une d'elle est le roi
+
+                        if (firstDiag1.every(val => (val <= 8 && val > 0))) {
+                            if (grid[(8 - firstDiag1[0]) * 8 + firstDiag1[1] - 1].hasChildNodes()) {
+                                if (grid[(8 - firstDiag1[0]) * 8 + firstDiag1[1] - 1].querySelector('.white')) {
+                                    if (grid[(8 - firstDiag1[0]) * 8 + firstDiag1[1] - 1].querySelector('.white').getAttribute('src') === "images/roi2.png") {
+                                        return false;
+                                    }
+                                }
+                            }
+                        }
+                        if (lastDiag1.every(val => (val <= 8 && val > 0))) {
+                            if (grid[(8 - lastDiag1[0]) * 8 + lastDiag1[1] - 1].hasChildNodes()) {
+                                if (grid[(8 - lastDiag1[0]) * 8 + lastDiag1[1] - 1].querySelector('.white')) {
+                                    if (grid[(8 - lastDiag1[0]) * 8 + lastDiag1[1] - 1].querySelector('.white').getAttribute('src') === "images/roi2.png") {
+                                        return false;
+                                    }
+                                }
+                            }
+                        }
+                        if (firstDiag2.every(val => (val <= 8 && val > 0))) {
+                            if (grid[(8 - firstDiag2[0]) * 8 + firstDiag2[1] - 1].hasChildNodes()) {
+                                if (grid[(8 - firstDiag2[0]) * 8 + firstDiag2[1] - 1].querySelector('.white')) {
+                                    if (grid[(8 - firstDiag2[0]) * 8 + firstDiag2[1] - 1].querySelector('.white').getAttribute('src') === "images/roi2.png") {
+                                        return false;
+                                    }
+                                }
+                            }
+                        }
+                        if (lastDiag2.every(val => (val <= 8 && val > 0))) {
+                            if (grid[(8 - lastDiag2[0]) * 8 + lastDiag2[1] - 1].hasChildNodes()) {
+                                if (grid[(8 - lastDiag2[0]) * 8 + lastDiag2[1] - 1].querySelector('.white')) {
+                                    if (grid[(8 - lastDiag2[0]) * 8 + lastDiag2[1] - 1].querySelector('.white').getAttribute('src') === "images/roi2.png") {
+                                        return false;
+                                    }
+                                }
+                            }
+                        }
+
+                    }
+                        break;
+                    case 'images/cavalier1.png':
+                        for (let i = 0; i < grid.length; i++) {
+                            if (i === 8 * (8 - (row + 1)) + (column + 2) - 1) {/*Check which case*/
+                                if (row + 1 <= 8 && column + 2 <= 8) {/*Check for overflow*/
+                                    if (grid[8 * (8 - (row + 1)) + (column + 2) - 1].querySelector('.white')) {
+                                        if (grid[8 * (8 - (row + 1)) + (column + 2) - 1].querySelector('.white').getAttribute('src') === "images/roi2.png") {
+                                            return false;
+                                        }
+                                    }
+                                }
+                            } else if (i === 8 * (8 - (row + 2)) + (column + 1) - 1) {
+                                if (row + 2 <= 8 && column + 1 <= 8) {
+                                    if (grid[8 * (8 - (row + 2)) + (column + 1) - 1].querySelector('.white')) {
+                                        if (grid[8 * (8 - (row + 2)) + (column + 1) - 1].querySelector('.white').getAttribute('src') === "images/roi2.png") {
+                                            return false;
+                                        }
+                                    }
+                                }
+                            } else if (i === 8 * (8 - (row + 1)) + (column - 2) - 1) {
+                                if (row + 1 <= 8 && column - 2 > 0) {
+                                    if (grid[8 * (8 - (row + 1)) + (column - 2) - 1].querySelector('.white')) {
+                                        if (grid[8 * (8 - (row + 1)) + (column - 2) - 1].querySelector('.white').getAttribute('src') === "images/roi2.png") {
+                                            return false;
+                                        }
+                                    }
+                                }
+
+                            } else if (i === 8 * (8 - (row + 2)) + (column - 1) - 1) {
+                                if (row + 2 <= 8 && column - 1 > 0) {
+                                    if (grid[8 * (8 - (row + 2)) + (column - 1) - 1].querySelector('.white')) {
+                                        if (grid[8 * (8 - (row + 2)) + (column - 1) - 1].querySelector('.white').getAttribute('src') === "images/roi2.png") {
+                                            return false;
+                                        }
+                                    }
+                                }
+
+                            } else if (i === 8 * (8 - (row - 1)) + (column + 2) - 1) {
+                                if (row - 1 > 0 && column + 2 <= 8) {
+                                    if (grid[8 * (8 - (row - 1)) + (column + 2) - 1].querySelector('.white')) {
+                                        if (grid[8 * (8 - (row - 1)) + (column + 2) - 1].querySelector('.white').getAttribute('src') === "images/roi2.png") {
+                                            return false;
+                                        }
+                                    }
+                                }
+
+                            } else if (i === 8 * (8 - (row - 2)) + (column + 1) - 1) {
+                                if (row - 2 > 0 && column + 1 <= 8) {
+                                    if (grid[8 * (8 - (row - 2)) + (column + 1) - 1].querySelector('.white')) {
+                                        if (grid[8 * (8 - (row - 2)) + (column + 1) - 1].querySelector('.white').getAttribute('src') === "images/roi2.png") {
+                                            return false;
+                                        }
+                                    }
+
+                                }
+
+                            } else if (i === 8 * (8 - (row - 1)) + (column - 2) - 1) {
+                                if (row - 1 > 0 && column - 2 > 0) {
+                                    if (grid[8 * (8 - (row - 1)) + (column - 2) - 1].querySelector('.white')) {
+                                        if (grid[8 * (8 - (row - 1)) + (column - 2) - 1].querySelector('.white').getAttribute('src') === "images/roi2.png") {
+                                            return false;
+                                        }
+                                    }
+
+                                }
+
+                            } else if (i === 8 * (8 - (row - 2)) + (column - 1) - 1) {
+                                if (row - 2 > 0 && column - 1 > 0) {
+                                    if (grid[8 * (8 - (row - 2)) + (column - 1) - 1].querySelector('.white')) {
+                                        if (grid[8 * (8 - (row - 2)) + (column - 1) - 1].querySelector('.white').getAttribute('src') === "images/roi2.png") {
+                                            return false;
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                        break;
+                    case 'images/roi1.png':
+                        for (let i = 0; i < grid.length; i++) {
+                            if (i === 8 * (8 - (row + 1)) + (column + 1) - 1) {/*Check which case*/
+                                if (row + 1 <= 8 && column + 1 <= 8) {/*Check for overflow*/
+                                    if (grid[8 * (8 - (row + 1)) + (column + 1) - 1].querySelector('.white')) {
+                                        if (grid[8 * (8 - (row + 1)) + (column + 1) - 1].querySelector('.white').getAttribute('src') === "images/roi2.png") {
+                                            return false;
+                                        }
+                                    }
+                                }
+                            } else if (i === 8 * (8 - (row)) + (column + 1) - 1) {
+                                if (column + 1 <= 8) {
+                                    if (grid[8 * (8 - (row)) + (column + 1) - 1].querySelector('.white')) {
+                                        if (grid[8 * (8 - (row)) + (column + 1) - 1].querySelector('.white').getAttribute('src') === "images/roi2.png") {
+                                            return false;
+                                        }
+                                    }
+                                }
+                            } else if (i === 8 * (8 - (row - 1)) + (column + 1) - 1) {
+                                if (row - 1 > 0 && column + 1 <= 8) {
+                                    if (grid[8 * (8 - (row - 1)) + (column + 1) - 1].querySelector('.white')) {
+                                        if (grid[8 * (8 - (row - 1)) + (column + 1) - 1].querySelector('.white').getAttribute('src') === "images/roi2.png") {
+                                            return false;
+                                        }
+                                    }
+                                }
+
+                            } else if (i === 8 * (8 - (row - 1)) + (column) - 1) {
+                                if (row - 1 > 0) {
+                                    if (grid[8 * (8 - (row - 1)) + (column) - 1].querySelector('.white')) {
+                                        if (grid[8 * (8 - (row - 1)) + (column) - 1].querySelector('.white').getAttribute('src') === "images/roi2.png") {
+                                            return false;
+                                        }
+                                    }
+                                }
+
+                            } else if (i === 8 * (8 - (row - 1)) + (column - 1) - 1) {
+                                if (row - 1 > 0 && column - 1 > 0) {
+                                    if (grid[8 * (8 - (row - 1)) + (column - 1) - 1].querySelector('.white')) {
+                                        if (grid[8 * (8 - (row - 1)) + (column - 1) - 1].querySelector('.white').getAttribute('src') === "images/roi2.png") {
+                                            return false;
+                                        }
+                                    }
+                                }
+
+                            } else if (i === 8 * (8 - (row)) + (column - 1) - 1) {
+                                if (column - 1 > 0) {
+                                    if (grid[8 * (8 - (row)) + (column - 1) - 1].querySelector('.white')) {
+                                        if (grid[8 * (8 - (row)) + (column - 1) - 1].querySelector('.white').getAttribute('src') === "images/roi2.png") {
+                                            return false;
+                                        }
+                                    }
+
+                                }
+
+                            } else if (i === 8 * (8 - (row + 1)) + (column - 1) - 1) {
+                                if (row + 1 <= 8 && column - 1 > 0) {
+                                    if (grid[8 * (8 - (row + 1)) + (column - 1) - 1].querySelector('.white')) {
+                                        if (grid[8 * (8 - (row + 1)) + (column - 1) - 1].querySelector('.white').getAttribute('src') === "images/roi2.png") {
+                                            return false;
+                                        }
+                                    }
+
+                                }
+
+                            } else if (i === 8 * (8 - (row + 1)) + (column) - 1) {
+                                if (row + 1 <= 8) {
+                                    if (grid[8 * (8 - (row + 1)) + (column) - 1].querySelector('.white')) {
+                                        if (grid[8 * (8 - (row + 1)) + (column - 1) - 1].querySelector('.white').getAttribute('src') === "images/roi2.png") {
+                                            return false;
+                                        }
+                                    }
+
+                                }
+                            }
+                        }
+                        break;
+                    case 'images/dame1.png':
+                        // Parcours des cases sur la même ligne / colonne
+                        console.log(lastColumn, lastRow, firstColumn, firstRow);
+                        for (let i = column + 1; i <= 8 && !grid[(8 - row) * 8 + i - 1].hasChildNodes(); i++) {
+                            lastColumn = i + 1;
+                        }
+                        for (let i = column - 1; i > 0 && !grid[(8 - row) * 8 + i - 1].hasChildNodes(); i--) {
+                            firstColumn = i - 1;
+                        }
+                        for (let i = row + 1; i <= 8 && !grid[(8 - i) * 8 + column - 1].hasChildNodes(); i++) {
+                            lastRow = i + 1;
+                        }
+                        for (let i = row - 1; i > 0 && !grid[(8 - i) * 8 + column - 1].hasChildNodes(); i--) {
+                            firstRow = i - 1;
+                        }
+                        // Identification des captures possibles et vérification si l'une d'elle est le roi
+                        if (firstColumn >= 1) {
+                            if (grid[(8 - row) * 8 + (firstColumn) - 1].querySelector('.white')) {
+                                if (grid[(8 - row) * 8 + (firstColumn) - 1].querySelector('.white').getAttribute('src') === "images/roi2.png") {
+                                    return false;
+                                }
+                            }
+                        }
+                        if (lastColumn <= 8 && lastColumn !== 0) {
+                            if (grid[(8 - row) * 8 + (lastColumn) - 1].querySelector('.white')) {
+                                if (grid[(8 - row) * 8 + (lastColumn) - 1].querySelector('.white').getAttribute('src') === "images/roi2.png") {
+                                    return false;
+                                }
+                            }
+                        }
+                        if (firstRow >= 1) {
+                            if (grid[(8 - firstRow) * 8 + (column) - 1].querySelector('.white')) {
+                                if (grid[(8 - firstRow) * 8 + (column) - 1].querySelector('.white').getAttribute('src') === "images/roi2.png") {
+                                    return false;
+                                }
+                            }
+                        }
+                        if (lastRow <= 8 && lastRow !== 0) {
+                            if (grid[(8 - lastRow) * 8 + (column) - 1].querySelector('.white')) {
+                                if (grid[(8 - lastRow) * 8 + (column) - 1].querySelector('.white').getAttribute('src') === "images/roi2.png") {
+                                    return false;
+                                }
+                            }
+                        }
+                        {
+                            // Parcours des cases sur la même diagonale
+                            rowIterator = row + 1;
+                            columnIterator = column + 1;
+                            do {
+                                if (rowIterator <= 8 && columnIterator <= 8 && rowIterator > 0 && columnIterator > 0 && !grid[(8 - rowIterator) * 8 + columnIterator - 1].hasChildNodes()) {
+                                    rowIterator++;
+                                    columnIterator++;
+                                }
+                                lastDiag1 = [rowIterator, columnIterator];
+                            } while (rowIterator <= 8 && columnIterator <= 8 && !grid[(8 - rowIterator) * 8 + columnIterator - 1].hasChildNodes());
+                            rowIterator = row - 1;
+                            columnIterator = column - 1;
+                            do {
+                                if (rowIterator <= 8 && columnIterator <= 8 && rowIterator > 0 && columnIterator > 0 && !grid[(8 - rowIterator) * 8 + columnIterator - 1].hasChildNodes()) {
+                                    rowIterator--;
+                                    columnIterator--;
+                                }
+                                firstDiag1 = [rowIterator, columnIterator];
+
+                            } while (rowIterator > 0 && columnIterator > 0 && !grid[(8 - rowIterator) * 8 + columnIterator - 1].hasChildNodes());
+                            rowIterator = row + 1;
+                            columnIterator = column - 1;
+                            do {
+                                if (rowIterator <= 8 && columnIterator <= 8 && rowIterator > 0 && columnIterator > 0 && !grid[(8 - rowIterator) * 8 + columnIterator - 1].hasChildNodes()) {
+                                    rowIterator++;
+                                    columnIterator--;
+                                }
+                                lastDiag2 = [rowIterator, columnIterator];
+
+                            } while (rowIterator <= 8 && columnIterator > 0 && !grid[(8 - rowIterator) * 8 + columnIterator - 1].hasChildNodes());
+                            rowIterator = row - 1;
+                            columnIterator = column + 1;
+                            do {
+                                if (rowIterator <= 8 && columnIterator <= 8 && rowIterator > 0 && columnIterator > 0 && !grid[(8 - rowIterator) * 8 + columnIterator - 1].hasChildNodes()) {
+                                    rowIterator--;
+                                    columnIterator++;
+                                }
+                                firstDiag2 = [rowIterator, columnIterator];
+
+                            } while (rowIterator > 0 && columnIterator <= 8 && !grid[(8 - rowIterator) * 8 + columnIterator - 1].hasChildNodes());
+                            // Identification des captures possibles et vérification si l'une d'elle est le roi
+
+                            if (firstDiag1.every(val => (val <= 8 && val > 0))) {
+                                if (grid[(8 - firstDiag1[0]) * 8 + firstDiag1[1] - 1].hasChildNodes()) {
+                                    if (grid[(8 - firstDiag1[0]) * 8 + firstDiag1[1] - 1].querySelector('.white')) {
+                                        if (grid[(8 - firstDiag1[0]) * 8 + firstDiag1[1] - 1].querySelector('.white').getAttribute('src') === "images/roi2.png") {
+                                            return false;
+                                        }
+                                    }
+                                }
+                            }
+                            if (lastDiag1.every(val => (val <= 8 && val > 0))) {
+                                if (grid[(8 - lastDiag1[0]) * 8 + lastDiag1[1] - 1].hasChildNodes()) {
+                                    if (grid[(8 - lastDiag1[0]) * 8 + lastDiag1[1] - 1].querySelector('.white')) {
+                                        if (grid[(8 - lastDiag1[0]) * 8 + lastDiag1[1] - 1].querySelector('.white').getAttribute('src') === "images/roi2.png") {
+                                            return false;
+                                        }
+                                    }
+                                }
+                            }
+                            if (firstDiag2.every(val => (val <= 8 && val > 0))) {
+                                if (grid[(8 - firstDiag2[0]) * 8 + firstDiag2[1] - 1].hasChildNodes()) {
+                                    if (grid[(8 - firstDiag2[0]) * 8 + firstDiag2[1] - 1].querySelector('.white')) {
+                                        if (grid[(8 - firstDiag2[0]) * 8 + firstDiag2[1] - 1].querySelector('.white').getAttribute('src') === "images/roi2.png") {
+                                            return false;
+                                        }
+                                    }
+                                }
+                            }
+                            if (lastDiag2.every(val => (val <= 8 && val > 0))) {
+                                if (grid[(8 - lastDiag2[0]) * 8 + lastDiag2[1] - 1].hasChildNodes()) {
+                                    if (grid[(8 - lastDiag2[0]) * 8 + lastDiag2[1] - 1].querySelector('.white')) {
+                                        if (grid[(8 - lastDiag2[0]) * 8 + lastDiag2[1] - 1].querySelector('.white').getAttribute('src') === "images/roi2.png") {
+                                            return false;
+                                        }
+                                    }
+                                }
+                            }
+
+                        }
+                        break;
+                }
+                clickedPiece = e;
+                for (let i = 0; i < grid.length; i++) {
+                    if (grid[i].querySelector('[src="images/cible1.png"]')) {
+                        grid[i].querySelector('[src="images/cible1.png"]').addEventListener('click', (e) => move(e, clickedPiece));
+                    }
+                    else if (grid[i].querySelector('[src="images/cible2.png"]')) {
+                        grid[i].querySelector('[src="images/cible2.png"]').addEventListener('click', (e) => move(e, clickedPiece));
+
+                    }
+                }
+
+
+            }
+        }
+        if (game.turn === 'black') {
+            for (let i = 0; i < whitePieces.length; i++) {
+                let currentPiece = whitePieces[i];
+                let currentPosition = currentPiece.parentElement.getAttribute('data-id');
+                let column = parseInt(currentPosition[0]);
+                let row = parseInt(currentPosition[2]);
+                let firstColumn = column - 1;
+                let lastColumn = column + 1;
+                let firstRow = row - 1;
+                let lastRow = row + 1;
+                let firstDiag1 = [];
+                let firstDiag2 = [];
+                let lastDiag1 = [];
+                let lastDiag2 = [];
+                switch (currentPiece.getAttribute('src')) {
+                    case 'images/pion2.png':
+                        if (column < 8) {
+                            if (grid[(8 - (row + 1)) * 8 + (column + 1) - 1].querySelector('.black')) {
+                                if (grid[(8 - (row + 1)) * 8 + (column + 1) - 1].querySelector('.black').getAttribute('src') === "images/roi1.png") {
+                                    return false;
+                                }
+                            }
+                        }
+                        if (column > 1) {
+                            if (grid[(8 - (row + 1)) * 8 + (column - 1) - 1].querySelector('.black')) {
+                                if (grid[(8 - (row + 1)) * 8 + (column - 1) - 1].querySelector('.black').getAttribute('src') === "images/roi1.png") {
+                                    return false;
+                                }
+                            }
+                        }
+                        break;
+                    case 'images/tour2.png':
+                        // Parcours des cases sur la même ligne / colonne
+                        console.log(lastColumn, lastRow, firstColumn, firstRow);
+                        for (let i = column + 1; i <= 8 && !grid[(8 - row) * 8 + i - 1].hasChildNodes(); i++) {
+                            lastColumn = i + 1;
+                        }
+                        for (let i = column - 1; i > 0 && !grid[(8 - row) * 8 + i - 1].hasChildNodes(); i--) {
+                            firstColumn = i - 1;
+                        }
+                        for (let i = row + 1; i <= 8 && !grid[(8 - i) * 8 + column - 1].hasChildNodes(); i++) {
+                            lastRow = i + 1;
+                        }
+                        for (let i = row - 1; i > 0 && !grid[(8 - i) * 8 + column - 1].hasChildNodes(); i--) {
+                            firstRow = i - 1;
+                        }
+                        // Identification des captures possibles et vérification si l'une d'elle est le roi
+                        if (firstColumn >= 1) {
+                            if (grid[(8 - row) * 8 + (firstColumn) - 1].querySelector('.black')) {
+                                if (grid[(8 - row) * 8 + (firstColumn) - 1].querySelector('.black').getAttribute('src') === "images/roi1.png") {
+                                    return false;
+                                }
+                            }
+                        }
+                        if (lastColumn <= 8 && lastColumn !== 0) {
+                            if (grid[(8 - row) * 8 + (lastColumn) - 1].querySelector('.black')) {
+                                if (grid[(8 - row) * 8 + (lastColumn) - 1].querySelector('.black').getAttribute('src') === "images/roi1.png") {
+                                    return false;
+                                }
+                            }
+                        }
+                        if (firstRow >= 1) {
+                            if (grid[(8 - firstRow) * 8 + (column) - 1].querySelector('.black')) {
+                                if (grid[(8 - firstRow) * 8 + (column) - 1].querySelector('.black').getAttribute('src') === "images/roi1.png") {
+                                    return false;
+                                }
+                            }
+                        }
+                        if (lastRow <= 8 && lastRow !== 0) {
+                            if (grid[(8 - lastRow) * 8 + (column) - 1].querySelector('.black')) {
+                                if (grid[(8 - lastRow) * 8 + (column) - 1].querySelector('.black').getAttribute('src') === "images/roi1.png") {
+                                    return false;
+                                }
+                            }
+                        }
+                        break;
+                    case 'images/fou2.png': {
+                        // Parcours des cases sur la même diagonale
+                        rowIterator = row + 1;
+                        columnIterator = column + 1;
+                        do {
+                            if (rowIterator <= 8 && columnIterator <= 8 && rowIterator > 0 && columnIterator > 0 && !grid[(8 - rowIterator) * 8 + columnIterator - 1].hasChildNodes()) {
+                                rowIterator++;
+                                columnIterator++;
+                            }
+                            lastDiag1 = [rowIterator, columnIterator];
+                        } while (rowIterator <= 8 && columnIterator <= 8 && !grid[(8 - rowIterator) * 8 + columnIterator - 1].hasChildNodes());
+                        rowIterator = row - 1;
+                        columnIterator = column - 1;
+                        do {
+                            if (rowIterator <= 8 && columnIterator <= 8 && rowIterator > 0 && columnIterator > 0 && !grid[(8 - rowIterator) * 8 + columnIterator - 1].hasChildNodes()) {
+                                rowIterator--;
+                                columnIterator--;
+                            }
+                            firstDiag1 = [rowIterator, columnIterator];
+
+                        } while (rowIterator > 0 && columnIterator > 0 && !grid[(8 - rowIterator) * 8 + columnIterator - 1].hasChildNodes());
+                        rowIterator = row + 1;
+                        columnIterator = column - 1;
+                        do {
+                            if (rowIterator <= 8 && columnIterator <= 8 && rowIterator > 0 && columnIterator > 0 && !grid[(8 - rowIterator) * 8 + columnIterator - 1].hasChildNodes()) {
+                                rowIterator++;
+                                columnIterator--;
+                            }
+                            lastDiag2 = [rowIterator, columnIterator];
+
+                        } while (rowIterator <= 8 && columnIterator > 0 && !grid[(8 - rowIterator) * 8 + columnIterator - 1].hasChildNodes());
+                        rowIterator = row - 1;
+                        columnIterator = column + 1;
+                        do {
+                            if (rowIterator <= 8 && columnIterator <= 8 && rowIterator > 0 && columnIterator > 0 && !grid[(8 - rowIterator) * 8 + columnIterator - 1].hasChildNodes()) {
+                                rowIterator--;
+                                columnIterator++;
+                            }
+                            firstDiag2 = [rowIterator, columnIterator];
+
+                        } while (rowIterator > 0 && columnIterator <= 8 && !grid[(8 - rowIterator) * 8 + columnIterator - 1].hasChildNodes());
+                        // Identification des captures possibles et vérification si l'une d'elle est le roi
+
+                        if (firstDiag1.every(val => (val <= 8 && val > 0))) {
+                            if (grid[(8 - firstDiag1[0]) * 8 + firstDiag1[1] - 1].hasChildNodes()) {
+                                if (grid[(8 - firstDiag1[0]) * 8 + firstDiag1[1] - 1].querySelector('.black')) {
+                                    if (grid[(8 - firstDiag1[0]) * 8 + firstDiag1[1] - 1].querySelector('.black').getAttribute('src') === "images/roi1.png") {
+                                        return false;
+                                    }
+                                }
+                            }
+                        }
+                        if (lastDiag1.every(val => (val <= 8 && val > 0))) {
+                            if (grid[(8 - lastDiag1[0]) * 8 + lastDiag1[1] - 1].hasChildNodes()) {
+                                if (grid[(8 - lastDiag1[0]) * 8 + lastDiag1[1] - 1].querySelector('.black')) {
+                                    if (grid[(8 - lastDiag1[0]) * 8 + lastDiag1[1] - 1].querySelector('.black').getAttribute('src') === "images/roi1.png") {
+                                        return false;
+                                    }
+                                }
+                            }
+                        }
+                        if (firstDiag2.every(val => (val <= 8 && val > 0))) {
+                            if (grid[(8 - firstDiag2[0]) * 8 + firstDiag2[1] - 1].hasChildNodes()) {
+                                if (grid[(8 - firstDiag2[0]) * 8 + firstDiag2[1] - 1].querySelector('.black')) {
+                                    if (grid[(8 - firstDiag2[0]) * 8 + firstDiag2[1] - 1].querySelector('.black').getAttribute('src') === "images/roi1.png") {
+                                        return false;
+                                    }
+                                }
+                            }
+                        }
+                        if (lastDiag2.every(val => (val <= 8 && val > 0))) {
+                            if (grid[(8 - lastDiag2[0]) * 8 + lastDiag2[1] - 1].hasChildNodes()) {
+                                if (grid[(8 - lastDiag2[0]) * 8 + lastDiag2[1] - 1].querySelector('.black')) {
+                                    if (grid[(8 - lastDiag2[0]) * 8 + lastDiag2[1] - 1].querySelector('.black').getAttribute('src') === "images/roi1.png") {
+                                        return false;
+                                    }
+                                }
+                            }
+                        }
+
+                    }
+                        break;
+                    case 'images/cavalier2.png':
+                        for (let i = 0; i < grid.length; i++) {
+                            if (i === 8 * (8 - (row + 1)) + (column + 2) - 1) {/*Check which case*/
+                                if (row + 1 <= 8 && column + 2 <= 8) {/*Check for overflow*/
+                                    if (grid[8 * (8 - (row + 1)) + (column + 2) - 1].querySelector('.black')) {
+                                        if (grid[8 * (8 - (row + 1)) + (column + 2) - 1].querySelector('.black').getAttribute('src') === "images/roi1.png") {
+                                            return false;
+                                        }
+                                    }
+                                }
+                            } else if (i === 8 * (8 - (row + 2)) + (column + 1) - 1) {
+                                if (row + 2 <= 8 && column + 1 <= 8) {
+                                    if (grid[8 * (8 - (row + 2)) + (column + 1) - 1].querySelector('.black')) {
+                                        if (grid[8 * (8 - (row + 2)) + (column + 1) - 1].querySelector('.black').getAttribute('src') === "images/roi1.png") {
+                                            return false;
+                                        }
+                                    }
+                                }
+                            } else if (i === 8 * (8 - (row + 1)) + (column - 2) - 1) {
+                                if (row + 1 <= 8 && column - 2 > 0) {
+                                    if (grid[8 * (8 - (row + 1)) + (column - 2) - 1].querySelector('.black')) {
+                                        if (grid[8 * (8 - (row + 1)) + (column - 2) - 1].querySelector('.black').getAttribute('src') === "images/roi1.png") {
+                                            return false;
+                                        }
+                                    }
+                                }
+
+                            } else if (i === 8 * (8 - (row + 2)) + (column - 1) - 1) {
+                                if (row + 2 <= 8 && column - 1 > 0) {
+                                    if (grid[8 * (8 - (row + 2)) + (column - 1) - 1].querySelector('.black')) {
+                                        if (grid[8 * (8 - (row + 2)) + (column - 1) - 1].querySelector('.black').getAttribute('src') === "images/roi1.png") {
+                                            return false;
+                                        }
+                                    }
+                                }
+
+                            } else if (i === 8 * (8 - (row - 1)) + (column + 2) - 1) {
+                                if (row - 1 > 0 && column + 2 <= 8) {
+                                    if (grid[8 * (8 - (row - 1)) + (column + 2) - 1].querySelector('.black')) {
+                                        if (grid[8 * (8 - (row - 1)) + (column + 2) - 1].querySelector('.black').getAttribute('src') === "images/roi1.png") {
+                                            return false;
+                                        }
+                                    }
+                                }
+
+                            } else if (i === 8 * (8 - (row - 2)) + (column + 1) - 1) {
+                                if (row - 2 > 0 && column + 1 <= 8) {
+                                    if (grid[8 * (8 - (row - 2)) + (column + 1) - 1].querySelector('.black')) {
+                                        if (grid[8 * (8 - (row - 2)) + (column + 1) - 1].querySelector('.black').getAttribute('src') === "images/roi1.png") {
+                                            return false;
+                                        }
+                                    }
+
+                                }
+
+                            } else if (i === 8 * (8 - (row - 1)) + (column - 2) - 1) {
+                                if (row - 1 > 0 && column - 2 > 0) {
+                                    if (grid[8 * (8 - (row - 1)) + (column - 2) - 1].querySelector('.black')) {
+                                        if (grid[8 * (8 - (row - 1)) + (column - 2) - 1].querySelector('.black').getAttribute('src') === "images/roi1.png") {
+                                            return false;
+                                        }
+                                    }
+
+                                }
+
+                            } else if (i === 8 * (8 - (row - 2)) + (column - 1) - 1) {
+                                if (row - 2 > 0 && column - 1 > 0) {
+                                    if (grid[8 * (8 - (row - 2)) + (column - 1) - 1].querySelector('.black')) {
+                                        if (grid[8 * (8 - (row - 2)) + (column - 1) - 1].querySelector('.black').getAttribute('src') === "images/roi1.png") {
+                                            return false;
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                        break;
+                    case 'images/roi2.png':
+                        for (let i = 0; i < grid.length; i++) {
+                            if (i === 8 * (8 - (row + 1)) + (column + 1) - 1) {/*Check which case*/
+                                if (row + 1 <= 8 && column + 1 <= 8) {/*Check for overflow*/
+                                    if (grid[8 * (8 - (row + 1)) + (column + 1) - 1].querySelector('.black')) {
+                                        if (grid[8 * (8 - (row + 1)) + (column + 1) - 1].querySelector('.black').getAttribute('src') === "images/roi1.png") {
+                                            return false;
+                                        }
+                                    }
+                                }
+                            } else if (i === 8 * (8 - (row)) + (column + 1) - 1) {
+                                if (column + 1 <= 8) {
+                                    if (grid[8 * (8 - (row)) + (column + 1) - 1].querySelector('.black')) {
+                                        if (grid[8 * (8 - (row)) + (column + 1) - 1].querySelector('.black').getAttribute('src') === "images/roi1.png") {
+                                            return false;
+                                        }
+                                    }
+                                }
+                            } else if (i === 8 * (8 - (row - 1)) + (column + 1) - 1) {
+                                if (row - 1 > 0 && column + 1 <= 8) {
+                                    if (grid[8 * (8 - (row - 1)) + (column + 1) - 1].querySelector('.black')) {
+                                        if (grid[8 * (8 - (row - 1)) + (column + 1) - 1].querySelector('.black').getAttribute('src') === "images/roi1.png") {
+                                            return false;
+                                        }
+                                    }
+                                }
+
+                            } else if (i === 8 * (8 - (row - 1)) + (column) - 1) {
+                                if (row - 1 > 0) {
+                                    if (grid[8 * (8 - (row - 1)) + (column) - 1].querySelector('.black')) {
+                                        if (grid[8 * (8 - (row - 1)) + (column) - 1].querySelector('.black').getAttribute('src') === "images/roi1.png") {
+                                            return false;
+                                        }
+                                    }
+                                }
+
+                            } else if (i === 8 * (8 - (row - 1)) + (column - 1) - 1) {
+                                if (row - 1 > 0 && column - 1 > 0) {
+                                    if (grid[8 * (8 - (row - 1)) + (column - 1) - 1].querySelector('.black')) {
+                                        if (grid[8 * (8 - (row - 1)) + (column - 1) - 1].querySelector('.black').getAttribute('src') === "images/roi1.png") {
+                                            return false;
+                                        }
+                                    }
+                                }
+
+                            } else if (i === 8 * (8 - (row)) + (column - 1) - 1) {
+                                if (column - 1 > 0) {
+                                    if (grid[8 * (8 - (row)) + (column - 1) - 1].querySelector('.black')) {
+                                        if (grid[8 * (8 - (row)) + (column - 1) - 1].querySelector('.black').getAttribute('src') === "images/roi1.png") {
+                                            return false;
+                                        }
+                                    }
+
+                                }
+
+                            } else if (i === 8 * (8 - (row + 1)) + (column - 1) - 1) {
+                                if (row + 1 <= 8 && column - 1 > 0) {
+                                    if (grid[8 * (8 - (row + 1)) + (column - 1) - 1].querySelector('.black')) {
+                                        if (grid[8 * (8 - (row + 1)) + (column - 1) - 1].querySelector('.black').getAttribute('src') === "images/roi1.png") {
+                                            return false;
+                                        }
+                                    }
+
+                                }
+
+                            } else if (i === 8 * (8 - (row + 1)) + (column) - 1) {
+                                if (row + 1 <= 8) {
+                                    if (grid[8 * (8 - (row + 1)) + (column) - 1].querySelector('.black')) {
+                                        if (grid[8 * (8 - (row + 1)) + (column - 1) - 1].querySelector('.black').getAttribute('src') === "images/roi1.png") {
+                                            return false;
+                                        }
+                                    }
+
+                                }
+                            }
+                        }
+                        break;
+                    case 'images/dame2.png':
+                        // Parcours des cases sur la même ligne / colonne
+                        console.log(lastColumn, lastRow, firstColumn, firstRow);
+                        for (let i = column + 1; i <= 8 && !grid[(8 - row) * 8 + i - 1].hasChildNodes(); i++) {
+                            lastColumn = i + 1;
+                        }
+                        for (let i = column - 1; i > 0 && !grid[(8 - row) * 8 + i - 1].hasChildNodes(); i--) {
+                            firstColumn = i - 1;
+                        }
+                        for (let i = row + 1; i <= 8 && !grid[(8 - i) * 8 + column - 1].hasChildNodes(); i++) {
+                            lastRow = i + 1;
+                        }
+                        for (let i = row - 1; i > 0 && !grid[(8 - i) * 8 + column - 1].hasChildNodes(); i--) {
+                            firstRow = i - 1;
+                        }
+                        // Identification des captures possibles et vérification si l'une d'elle est le roi
+                        if (firstColumn >= 1) {
+                            if (grid[(8 - row) * 8 + (firstColumn) - 1].querySelector('.black')) {
+                                if (grid[(8 - row) * 8 + (firstColumn) - 1].querySelector('.black').getAttribute('src') === "images/roi1.png") {
+                                    return false;
+                                }
+                            }
+                        }
+                        if (lastColumn <= 8 && lastColumn !== 0) {
+                            if (grid[(8 - row) * 8 + (lastColumn) - 1].querySelector('.black')) {
+                                if (grid[(8 - row) * 8 + (lastColumn) - 1].querySelector('.black').getAttribute('src') === "images/roi1.png") {
+                                    return false;
+                                }
+                            }
+                        }
+                        if (firstRow >= 1) {
+                            if (grid[(8 - firstRow) * 8 + (column) - 1].querySelector('.black')) {
+                                if (grid[(8 - firstRow) * 8 + (column) - 1].querySelector('.black').getAttribute('src') === "images/roi1.png") {
+                                    return false;
+                                }
+                            }
+                        }
+                        if (lastRow <= 8 && lastRow !== 0) {
+                            if (grid[(8 - lastRow) * 8 + (column) - 1].querySelector('.black')) {
+                                if (grid[(8 - lastRow) * 8 + (column) - 1].querySelector('.black').getAttribute('src') === "images/roi1.png") {
+                                    return false;
+                                }
+                            }
+                        }
+                        {
+                            // Parcours des cases sur la même diagonale
+                            rowIterator = row + 1;
+                            columnIterator = column + 1;
+                            do {
+                                if (rowIterator <= 8 && columnIterator <= 8 && rowIterator > 0 && columnIterator > 0 && !grid[(8 - rowIterator) * 8 + columnIterator - 1].hasChildNodes()) {
+                                    rowIterator++;
+                                    columnIterator++;
+                                }
+                                lastDiag1 = [rowIterator, columnIterator];
+                            } while (rowIterator <= 8 && columnIterator <= 8 && !grid[(8 - rowIterator) * 8 + columnIterator - 1].hasChildNodes());
+                            rowIterator = row - 1;
+                            columnIterator = column - 1;
+                            do {
+                                if (rowIterator <= 8 && columnIterator <= 8 && rowIterator > 0 && columnIterator > 0 && !grid[(8 - rowIterator) * 8 + columnIterator - 1].hasChildNodes()) {
+                                    rowIterator--;
+                                    columnIterator--;
+                                }
+                                firstDiag1 = [rowIterator, columnIterator];
+
+                            } while (rowIterator > 0 && columnIterator > 0 && !grid[(8 - rowIterator) * 8 + columnIterator - 1].hasChildNodes());
+                            rowIterator = row + 1;
+                            columnIterator = column - 1;
+                            do {
+                                if (rowIterator <= 8 && columnIterator <= 8 && rowIterator > 0 && columnIterator > 0 && !grid[(8 - rowIterator) * 8 + columnIterator - 1].hasChildNodes()) {
+                                    rowIterator++;
+                                    columnIterator--;
+                                }
+                                lastDiag2 = [rowIterator, columnIterator];
+
+                            } while (rowIterator <= 8 && columnIterator > 0 && !grid[(8 - rowIterator) * 8 + columnIterator - 1].hasChildNodes());
+                            rowIterator = row - 1;
+                            columnIterator = column + 1;
+                            do {
+                                if (rowIterator <= 8 && columnIterator <= 8 && rowIterator > 0 && columnIterator > 0 && !grid[(8 - rowIterator) * 8 + columnIterator - 1].hasChildNodes()) {
+                                    rowIterator--;
+                                    columnIterator++;
+                                }
+                                firstDiag2 = [rowIterator, columnIterator];
+
+                            } while (rowIterator > 0 && columnIterator <= 8 && !grid[(8 - rowIterator) * 8 + columnIterator - 1].hasChildNodes());
+                            // Identification des captures possibles et vérification si l'une d'elle est le roi
+
+                            if (firstDiag1.every(val => (val <= 8 && val > 0))) {
+                                if (grid[(8 - firstDiag1[0]) * 8 + firstDiag1[1] - 1].hasChildNodes()) {
+                                    if (grid[(8 - firstDiag1[0]) * 8 + firstDiag1[1] - 1].querySelector('.black')) {
+                                        if (grid[(8 - firstDiag1[0]) * 8 + firstDiag1[1] - 1].querySelector('.black').getAttribute('src') === "images/roi1.png") {
+                                            return false;
+                                        }
+                                    }
+                                }
+                            }
+                            if (lastDiag1.every(val => (val <= 8 && val > 0))) {
+                                if (grid[(8 - lastDiag1[0]) * 8 + lastDiag1[1] - 1].hasChildNodes()) {
+                                    if (grid[(8 - lastDiag1[0]) * 8 + lastDiag1[1] - 1].querySelector('.black')) {
+                                        if (grid[(8 - lastDiag1[0]) * 8 + lastDiag1[1] - 1].querySelector('.black').getAttribute('src') === "images/roi1.png") {
+                                            return false;
+                                        }
+                                    }
+                                }
+                            }
+                            if (firstDiag2.every(val => (val <= 8 && val > 0))) {
+                                if (grid[(8 - firstDiag2[0]) * 8 + firstDiag2[1] - 1].hasChildNodes()) {
+                                    if (grid[(8 - firstDiag2[0]) * 8 + firstDiag2[1] - 1].querySelector('.black')) {
+                                        if (grid[(8 - firstDiag2[0]) * 8 + firstDiag2[1] - 1].querySelector('.black').getAttribute('src') === "images/roi1.png") {
+                                            return false;
+                                        }
+                                    }
+                                }
+                            }
+                            if (lastDiag2.every(val => (val <= 8 && val > 0))) {
+                                if (grid[(8 - lastDiag2[0]) * 8 + lastDiag2[1] - 1].hasChildNodes()) {
+                                    if (grid[(8 - lastDiag2[0]) * 8 + lastDiag2[1] - 1].querySelector('.black')) {
+                                        if (grid[(8 - lastDiag2[0]) * 8 + lastDiag2[1] - 1].querySelector('.black').getAttribute('src') === "images/roi1.png") {
+                                            return false;
+                                        }
+                                    }
+                                }
+                            }
+
+                        }
+                        break;
+                }
+                clickedPiece = e;
+                for (let i = 0; i < grid.length; i++) {
+                    if (grid[i].querySelector('[src="images/cible1.png"]')) {
+                        grid[i].querySelector('[src="images/cible1.png"]').addEventListener('click', (e) => move(e, clickedPiece));
+                    }
+                    else if (grid[i].querySelector('[src="images/cible2.png"]')) {
+                        grid[i].querySelector('[src="images/cible2.png"]').addEventListener('click', (e) => move(e, clickedPiece));
+
+                    }
+                }
+
+            }
+        }
+        return true;
     }
     function playMoveWhite() {
         for (let i = 0; i < grid.length; i++) {
@@ -1320,10 +2255,14 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     createGrid();
+
     const grid = document.querySelectorAll('.board div');
 
     resetGrid();
+
     game.turn = 'white';
+
+
 
 })
 
