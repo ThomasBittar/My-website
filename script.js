@@ -9,7 +9,7 @@ let currentImage = 0;
 
 function changeSlide() {
     project[currentImage].classList.toggle("active");
-    currentImage = (currentImage + 1) % 4;
+    currentImage = (currentImage + 1) % 5;
     project[currentImage].classList.toggle("active");
     console.log("Execution");
 }

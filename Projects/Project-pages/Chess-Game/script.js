@@ -122,7 +122,7 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         }
     }
-    function showMoves(e) {
+    function showAllMoves(e) {
         if (e.target.nodeName === "IMG") {
             let currentPosition = e.target.parentElement.getAttribute('data-id');
             let shownMoves = document.querySelectorAll('.target');
@@ -565,12 +565,344 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
                     break;
                 case 'images/cavalier1.png':
+                    for (let i = 0; i < grid.length; i++) {
+                        if (i === 8 * (8 - (row + 1)) + (column + 2) - 1) {/*Check which case*/
+                            if (row + 1 <= 8 && column + 2 <= 8) {/*Check for overflow*/
+                                if (!grid[8 * (8 - (row + 1)) + (column + 2) - 1].querySelector('.black')) {
+                                    let cible = document.createElement('img');
+                                    cible.setAttribute('src', 'images/cible1.png');
+                                    cible.classList.add('target');
+                                    grid[i].appendChild(cible);
+                                }
+                            }
+                        } else if (i === 8 * (8 - (row + 2)) + (column + 1) - 1) {
+                            if (row + 2 <= 8 && column + 1 <= 8) {
+                                if (!grid[8 * (8 - (row + 2)) + (column + 1) - 1].querySelector('.black')) {
+                                    let cible = document.createElement('img');
+                                    cible.setAttribute('src', 'images/cible1.png');
+                                    cible.classList.add('target');
+                                    grid[i].appendChild(cible);
+                                }
+                            }
+                        } else if (i === 8 * (8 - (row + 1)) + (column - 2) - 1) {
+                            if (row + 1 <= 8 && column - 2 > 0) {
+                                if (!grid[8 * (8 - (row + 1)) + (column - 2) - 1].querySelector('.black')) {
+                                    let cible = document.createElement('img');
+                                    cible.setAttribute('src', 'images/cible1.png');
+                                    cible.classList.add('target');
+                                    grid[i].appendChild(cible);
+                                }
+                            }
+
+                        } else if (i === 8 * (8 - (row + 2)) + (column - 1) - 1) {
+                            if (row + 2 <= 8 && column - 1 > 0) {
+                                if (!grid[8 * (8 - (row + 2)) + (column - 1) - 1].querySelector('.black')) {
+                                    let cible = document.createElement('img');
+                                    cible.setAttribute('src', 'images/cible1.png');
+                                    cible.classList.add('target');
+                                    grid[i].appendChild(cible);
+                                }
+                            }
+
+                        } else if (i === 8 * (8 - (row - 1)) + (column + 2) - 1) {
+                            if (row - 1 > 0 && column + 2 <= 8) {
+                                if (!grid[8 * (8 - (row - 1)) + (column + 2) - 1].querySelector('.black')) {
+                                    let cible = document.createElement('img');
+                                    cible.setAttribute('src', 'images/cible1.png');
+                                    cible.classList.add('target');
+                                    grid[i].appendChild(cible);
+                                }
+                            }
+
+                        } else if (i === 8 * (8 - (row - 2)) + (column + 1) - 1) {
+                            if (row - 2 > 0 && column + 1 <= 8) {
+                                if (!grid[8 * (8 - (row - 2)) + (column + 1) - 1].querySelector('.black')) {
+                                    let cible = document.createElement('img');
+                                    cible.setAttribute('src', 'images/cible1.png');
+                                    cible.classList.add('target');
+                                    grid[i].appendChild(cible);
+                                }
+
+                            }
+
+                        } else if (i === 8 * (8 - (row - 1)) + (column - 2) - 1) {
+                            if (row - 1 > 0 && column - 2 > 0) {
+                                if (!grid[8 * (8 - (row - 1)) + (column - 2) - 1].querySelector('.black')) {
+                                    let cible = document.createElement('img');
+                                    cible.setAttribute('src', 'images/cible1.png');
+                                    cible.classList.add('target');
+                                    grid[i].appendChild(cible);
+                                }
+
+                            }
+
+                        } else if (i === 8 * (8 - (row - 2)) + (column - 1) - 1) {
+                            if (row - 2 > 0 && column - 1 > 0) {
+                                if (!grid[8 * (8 - (row - 2)) + (column - 1) - 1].querySelector('.black')) {
+                                    let cible = document.createElement('img');
+                                    cible.setAttribute('src', 'images/cible1.png');
+                                    cible.classList.add('target');
+                                    grid[i].appendChild(cible);
+                                }
+
+                            }
+                        }
+                    }
                     break;
                 case 'images/cavalier2.png':
+                    for (let i = 0; i < grid.length; i++) {
+                        if (i === 8 * (8 - (row + 1)) + (column + 2) - 1) {/*Check which case*/
+                            if (row + 1 <= 8 && column + 2 <= 8) {/*Check for overflow*/
+                                if (!grid[8 * (8 - (row + 1)) + (column + 2) - 1].querySelector('.white')) {
+                                    let cible = document.createElement('img');
+                                    cible.setAttribute('src', 'images/cible2.png');
+                                    cible.classList.add('target');
+                                    grid[i].appendChild(cible);
+                                }
+                            }
+                        } else if (i === 8 * (8 - (row + 2)) + (column + 1) - 1) {
+                            if (row + 2 <= 8 && column + 1 <= 8) {
+                                if (!grid[8 * (8 - (row + 2)) + (column + 1) - 1].querySelector('.white')) {
+                                    let cible = document.createElement('img');
+                                    cible.setAttribute('src', 'images/cible2.png');
+                                    cible.classList.add('target');
+                                    grid[i].appendChild(cible);
+                                }
+                            }
+                        } else if (i === 8 * (8 - (row + 1)) + (column - 2) - 1) {
+                            if (row + 1 <= 8 && column - 2 > 0) {
+                                if (!grid[8 * (8 - (row + 1)) + (column - 2) - 1].querySelector('.white')) {
+                                    let cible = document.createElement('img');
+                                    cible.setAttribute('src', 'images/cible2.png');
+                                    cible.classList.add('target');
+                                    grid[i].appendChild(cible);
+                                }
+                            }
+
+                        } else if (i === 8 * (8 - (row + 2)) + (column - 1) - 1) {
+                            if (row + 2 <= 8 && column - 1 > 0) {
+                                if (!grid[8 * (8 - (row + 2)) + (column - 1) - 1].querySelector('.white')) {
+                                    let cible = document.createElement('img');
+                                    cible.setAttribute('src', 'images/cible2.png');
+                                    cible.classList.add('target');
+                                    grid[i].appendChild(cible);
+                                }
+                            }
+
+                        } else if (i === 8 * (8 - (row - 1)) + (column + 2) - 1) {
+                            if (row - 1 > 0 && column + 2 <= 8) {
+                                if (!grid[8 * (8 - (row - 1)) + (column + 2) - 1].querySelector('.white')) {
+                                    let cible = document.createElement('img');
+                                    cible.setAttribute('src', 'images/cible2.png');
+                                    cible.classList.add('target');
+                                    grid[i].appendChild(cible);
+                                }
+                            }
+
+                        } else if (i === 8 * (8 - (row - 2)) + (column + 1) - 1) {
+                            if (row - 2 > 0 && column + 1 <= 8) {
+                                if (!grid[8 * (8 - (row - 2)) + (column + 1) - 1].querySelector('.white')) {
+                                    let cible = document.createElement('img');
+                                    cible.setAttribute('src', 'images/cible2.png');
+                                    cible.classList.add('target');
+                                    grid[i].appendChild(cible);
+                                }
+
+                            }
+
+                        } else if (i === 8 * (8 - (row - 1)) + (column - 2) - 1) {
+                            if (row - 1 > 0 && column - 2 > 0) {
+                                if (!grid[8 * (8 - (row - 1)) + (column - 2) - 1].querySelector('.white')) {
+                                    let cible = document.createElement('img');
+                                    cible.setAttribute('src', 'images/cible2.png');
+                                    cible.classList.add('target');
+                                    grid[i].appendChild(cible);
+                                }
+
+                            }
+
+                        } else if (i === 8 * (8 - (row - 2)) + (column - 1) - 1) {
+                            if (row - 2 > 0 && column - 1 > 0) {
+                                if (!grid[8 * (8 - (row - 2)) + (column - 1) - 1].querySelector('.white')) {
+                                    let cible = document.createElement('img');
+                                    cible.setAttribute('src', 'images/cible2.png');
+                                    cible.classList.add('target');
+                                    grid[i].appendChild(cible);
+                                }
+
+                            }
+                        }
+                    }
                     break;
                 case 'images/roi1.png':
+                    for (let i = 0; i < grid.length; i++) {
+                        if (i === 8 * (8 - (row + 1)) + (column + 1) - 1) {/*Check which case*/
+                            if (row + 1 <= 8 && column + 1 <= 8) {/*Check for overflow*/
+                                if (!grid[8 * (8 - (row + 1)) + (column + 1) - 1].querySelector('.black')) {
+                                    let cible = document.createElement('img');
+                                    cible.setAttribute('src', 'images/cible1.png');
+                                    cible.classList.add('target');
+                                    grid[i].appendChild(cible);
+                                }
+                            }
+                        } else if (i === 8 * (8 - (row)) + (column + 1) - 1) {
+                            if (column + 1 <= 8) {
+                                if (!grid[8 * (8 - (row)) + (column + 1) - 1].querySelector('.black')) {
+                                    let cible = document.createElement('img');
+                                    cible.setAttribute('src', 'images/cible1.png');
+                                    cible.classList.add('target');
+                                    grid[i].appendChild(cible);
+                                }
+                            }
+                        } else if (i === 8 * (8 - (row - 1)) + (column + 1) - 1) {
+                            if (row - 1 > 0 && column + 1 <= 8) {
+                                if (!grid[8 * (8 - (row - 1)) + (column + 1) - 1].querySelector('.black')) {
+                                    let cible = document.createElement('img');
+                                    cible.setAttribute('src', 'images/cible1.png');
+                                    cible.classList.add('target');
+                                    grid[i].appendChild(cible);
+                                }
+                            }
+
+                        } else if (i === 8 * (8 - (row - 1)) + (column) - 1) {
+                            if (row - 1 > 0) {
+                                if (!grid[8 * (8 - (row - 1)) + (column) - 1].querySelector('.black')) {
+                                    let cible = document.createElement('img');
+                                    cible.setAttribute('src', 'images/cible1.png');
+                                    cible.classList.add('target');
+                                    grid[i].appendChild(cible);
+                                }
+                            }
+
+                        } else if (i === 8 * (8 - (row - 1)) + (column - 1) - 1) {
+                            if (row - 1 > 0 && column - 1 > 0) {
+                                if (!grid[8 * (8 - (row - 1)) + (column - 1) - 1].querySelector('.black')) {
+                                    let cible = document.createElement('img');
+                                    cible.setAttribute('src', 'images/cible1.png');
+                                    cible.classList.add('target');
+                                    grid[i].appendChild(cible);
+                                }
+                            }
+
+                        } else if (i === 8 * (8 - (row)) + (column - 1) - 1) {
+                            if (column - 1 > 0) {
+                                if (!grid[8 * (8 - (row)) + (column - 1) - 1].querySelector('.black')) {
+                                    let cible = document.createElement('img');
+                                    cible.setAttribute('src', 'images/cible1.png');
+                                    cible.classList.add('target');
+                                    grid[i].appendChild(cible);
+                                }
+
+                            }
+
+                        } else if (i === 8 * (8 - (row + 1)) + (column - 1) - 1) {
+                            if (row + 1 <= 8 && column - 1 > 0) {
+                                if (!grid[8 * (8 - (row + 1)) + (column - 1) - 1].querySelector('.black')) {
+                                    let cible = document.createElement('img');
+                                    cible.setAttribute('src', 'images/cible1.png');
+                                    cible.classList.add('target');
+                                    grid[i].appendChild(cible);
+                                }
+
+                            }
+
+                        } else if (i === 8 * (8 - (row + 1)) + (column) - 1) {
+                            if (row + 1 <= 8) {
+                                if (!grid[8 * (8 - (row + 1)) + (column) - 1].querySelector('.black')) {
+                                    let cible = document.createElement('img');
+                                    cible.setAttribute('src', 'images/cible1.png');
+                                    cible.classList.add('target');
+                                    grid[i].appendChild(cible);
+                                }
+
+                            }
+                        }
+                    }
                     break;
                 case 'images/roi2.png':
+                    for (let i = 0; i < grid.length; i++) {
+                        if (i === 8 * (8 - (row + 1)) + (column + 1) - 1) {/*Check which case*/
+                            if (row + 1 <= 8 && column + 1 <= 8) {/*Check for overflow*/
+                                if (!grid[8 * (8 - (row + 1)) + (column + 1) - 1].querySelector('.white')) {
+                                    let cible = document.createElement('img');
+                                    cible.setAttribute('src', 'images/cible2.png');
+                                    cible.classList.add('target');
+                                    grid[i].appendChild(cible);
+                                }
+                            }
+                        } else if (i === 8 * (8 - (row)) + (column + 1) - 1) {
+                            if (column + 1 <= 8) {
+                                if (!grid[8 * (8 - (row)) + (column + 1) - 1].querySelector('.white')) {
+                                    let cible = document.createElement('img');
+                                    cible.setAttribute('src', 'images/cible2.png');
+                                    cible.classList.add('target');
+                                    grid[i].appendChild(cible);
+                                }
+                            }
+                        } else if (i === 8 * (8 - (row - 1)) + (column + 1) - 1) {
+                            if (row - 1 > 0 && column + 1 <= 8) {
+                                if (!grid[8 * (8 - (row - 1)) + (column + 1) - 1].querySelector('.white')) {
+                                    let cible = document.createElement('img');
+                                    cible.setAttribute('src', 'images/cible2.png');
+                                    cible.classList.add('target');
+                                    grid[i].appendChild(cible);
+                                }
+                            }
+
+                        } else if (i === 8 * (8 - (row - 1)) + (column) - 1) {
+                            if (row - 1 > 0) {
+                                if (!grid[8 * (8 - (row - 1)) + (column) - 1].querySelector('.white')) {
+                                    let cible = document.createElement('img');
+                                    cible.setAttribute('src', 'images/cible2.png');
+                                    cible.classList.add('target');
+                                    grid[i].appendChild(cible);
+                                }
+                            }
+
+                        } else if (i === 8 * (8 - (row - 1)) + (column - 1) - 1) {
+                            if (row - 1 > 0 && column - 1 > 0) {
+                                if (!grid[8 * (8 - (row - 1)) + (column - 1) - 1].querySelector('.white')) {
+                                    let cible = document.createElement('img');
+                                    cible.setAttribute('src', 'images/cible2.png');
+                                    cible.classList.add('target');
+                                    grid[i].appendChild(cible);
+                                }
+                            }
+
+                        } else if (i === 8 * (8 - (row)) + (column - 1) - 1) {
+                            if (column - 1 > 0) {
+                                if (!grid[8 * (8 - (row)) + (column - 1) - 1].querySelector('.white')) {
+                                    let cible = document.createElement('img');
+                                    cible.setAttribute('src', 'images/cible2.png');
+                                    cible.classList.add('target');
+                                    grid[i].appendChild(cible);
+                                }
+
+                            }
+
+                        } else if (i === 8 * (8 - (row + 1)) + (column - 1) - 1) {
+                            if (row + 1 <= 8 && column - 1 > 0) {
+                                if (!grid[8 * (8 - (row + 1)) + (column - 1) - 1].querySelector('.white')) {
+                                    let cible = document.createElement('img');
+                                    cible.setAttribute('src', 'images/cible2.png');
+                                    cible.classList.add('target');
+                                    grid[i].appendChild(cible);
+                                }
+
+                            }
+
+                        } else if (i === 8 * (8 - (row + 1)) + (column) - 1) {
+                            if (row + 1 <= 8) {
+                                if (!grid[8 * (8 - (row + 1)) + (column) - 1].querySelector('.white')) {
+                                    let cible = document.createElement('img');
+                                    cible.setAttribute('src', 'images/cible2.png');
+                                    cible.classList.add('target');
+                                    grid[i].appendChild(cible);
+                                }
+
+                            }
+                        }
+                    }
                     break;
                 case 'images/dame1.png':
                     //Déplacements sauf captures
@@ -952,7 +1284,7 @@ document.addEventListener('DOMContentLoaded', () => {
     resetGrid();
     for (let i = 0; i < grid.length; i++) {
         grid[i].addEventListener('click', (e) => { move(e, clickedPiece) })
-        grid[i].addEventListener('click', showMoves);
+        grid[i].addEventListener('click', showAllMoves);
         //grid[i].addEventListener('click', spawnItem);
         //grid[i].addEventListener('dblclick', deleteItem);
     }
